@@ -1,0 +1,17 @@
+{
+  "name": "intl-relative-time-spec",
+  "version": "1.0.0-pre-draft",
+  "description": "Intl.RelativeTime API Specification [Draft]",
+  "scripts": {
+    "build": "ecmarkup source.ecmarkup index.html",
+    "watch": "ecmarkup --watch source.ecmarkup index.html"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caridy/intl-relative-time-spec.git"
+  },
+  "devDependencies": {
+    "ecmarkup": "latest"
+  }
+}
