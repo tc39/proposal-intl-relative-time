@@ -1,12 +1,39 @@
 ## `Intl.RelativeTimeFormat` API Specification [draft]
 
+### Status
+
+__Stage 0__
+
+Implementation Progress
+
+ * Polyfill (in progress)
+
+Backpointers
+
+ * https://github.com/tc39/ecma402/issues/35
+
+### Authors
+
+ * Caridy Patiño (@caridy)
+ * Eric Ferraiuolo (@ericf)
+
+### Reviewers
+
+TBD
+
+### Informative
+
 This proposal is based on Unicode Relative Date Time Format method.
 
-It is also based on the Unicode Language Plural Rules:
+It is also based on the LDML spec, C.11 Language Plural Rules:
 
  * http://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules
 
-### Example
+### Prior Art
+
+TBD
+
+### Usage
 
 ```javascript
 let a = new Intl.RelativeTimeFormat("en", {
@@ -191,15 +218,10 @@ this Sa
 next Sa
 ```
 
-### Usage
+### Render Spec
 
 ```
 npm install
 npm run build
 open index.html
 ```
-
-### Details about this proposal
-
- * https://github.com/tc39/ecma402/issues/35
- * https://groups.google.com/forum/#!topic/javascript-globalization/3nFDf5al5hU
