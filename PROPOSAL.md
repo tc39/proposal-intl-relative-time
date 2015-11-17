@@ -30,14 +30,18 @@ Few libraries that would likely get benefited by `Intl.PluralForm` since they wi
 
 ### Relative time in other languages
 
-Java:
+java:
 
 ```java
-TBD
+com.ibm.icu.impl.RelativeDateFormat
+org.ocpsoft.prettytime.PrettyTime
 ```
 
-PHP:
+ruby:
 
-```php
-TBD
+```ruby
+include ActionView::Helpers::DateHelper
+def index
+  @sexy_date = time_ago_in_words(Date.today - 1)
+end
 ```
