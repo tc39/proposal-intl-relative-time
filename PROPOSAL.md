@@ -11,7 +11,7 @@ It is highly probable that the majority of current relative time formatting impl
 `Intl.RelativeTimeFormat` is a low level API to facilitate libraries and frameworks to format ordinals and cardinals in a localized fashion. It is also the first API under `Intl` that is not focused on formatting, but enables access to localization data that is already available in all browsers.
 
 ## Spec
-You can view the [spec text](spec/relativetimeformat.html) or rendered as [HTML](http://caridy.github.io/intl-relative-time-spec/index.html).
+You can view the [spec text](spec/relativetimeformat.html) or rendered as [HTML](https://rawgit.com/caridy/intl-relative-time-spec/master/index.html).
 
 ## Naming
 
