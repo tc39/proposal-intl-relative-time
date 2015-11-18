@@ -179,13 +179,13 @@
       </p>
 
       <emu-alg>
-        1. Let _pf_ be this RelativeTimeFormat object.
-        1. If _pf_.[[boundResolve]] is *undefined*, then
+        1. Let _rf_ be this RelativeTimeFormat object.
+        1. If _rf_.[[boundResolve]] is *undefined*, then
           1. Let _F_ be a new built-in function object as defined in <emu-xref href="#sec-relative-time-format-functions"></emu-xref>.
           1. The value of _F_’s *length* property is 1.
           1. Let _bf_ be BoundFunctionCreate(_F_, «*this* value»).
-          1. Set _pf_.[[boundResolve]] to _bf_.
-        1. Return _pf_.[[boundResolve]].
+          1. Set _rf_.[[boundResolve]] to _bf_.
+        1. Return _rf_.[[boundResolve]].
       </emu-alg>
 
       <emu-note>
@@ -262,25 +262,33 @@
 
       <emu-alg aoid="ComputeTimeUnits">
         1. Let _units_ be ObjectCreate(*%ObjectPrototype%*).
-        1. Let _millisecond_ be round(_v_).
-        1. Let _second_ be round(_millisecond_ / 1000).
-        1. Let _minute_ be round(_second_ / 60).
-        1. Let _hour_ be round(_minute_ / 60).
-        1. Let _day_ be round(_hour_ / 24).
-        1. Let _rawYear_ be _day_ * 400 / 146097.
-        1. Set _units_.[[second]] to _second_.
-        1. Set _units_.[[minute]] to _minute_.
-        1. Set _units_.[[hour]] to _hour_.
-        1. Set _units_.[[day]] to _day_.
-        1. Set _units_.[[week]] to round(_day_ / 7).
+        1. Let _rawYear_ be _v_ * 400 / msPer400Years.
+        1. Set _units_.[[second]] to round(_v_ / msPerSecond).
+        1. Set _units_.[[minute]] to round(_v_ / msPerMinute).
+        1. Set _units_.[[hour]] to round(_v_ / msPerHour).
+        1. Set _units_.[[day]] to round(_v_ / msPerDay).
+        1. Set _units_.[[week]] to round(_v_ / msPerWeek).
         1. Set _units_.[[month]] to round(_rawYear_ * 12).
         1. Set _units_.[[quarter]] to round(_rawYear_ * 4).
         1. Set _units_.[[year]] to round(_rawYear_).
         1. Return _units_.
       </emu-alg>
 
+      <p>where</p>
+
+      <emu-eqn aoid="DaysPerWeek">DaysPerWeek = 7</emu-eqn>
+      <emu-eqn aoid="HoursPerDay">HoursPerDay = 24</emu-eqn>
+      <emu-eqn aoid="MinutesPerHour">MinutesPerHour = 60</emu-eqn>
+      <emu-eqn aoid="SecondsPerMinute">SecondsPerMinute = 60</emu-eqn>
+      <emu-eqn aoid="msPerSecond">msPerSecond = 1000</emu-eqn>
+      <emu-eqn aoid="msPerMinute">msPerMinute = 60000 = msPerSecond &times; SecondsPerMinute</emu-eqn>
+      <emu-eqn aoid="msPerHour">msPerHour = 3600000 = msPerMinute &times; MinutesPerHour</emu-eqn>
+      <emu-eqn aoid="msPerDay">msPerDay = 86400000 = msPerHour &times; HoursPerDay</emu-eqn>
+      <emu-eqn aoid="msPerWeek">msPerWeek = 604800000 = msPerDay &times; DaysPerWeek</emu-eqn>
+      <emu-eqn aoid="msPerWeek">msPer400Years = 88359465600000 = msPerDay &times; 146097</emu-eqn>
+
       <emu-note>
-        400 years have 146097 days when taking into account the leap year rules.
+        400 years have 146097 days when taking into account the leap year rules. We can not take into consideration the timeline for the leap years because the relativeness of v is not implicit in this abtract operation.
       </emu-note>
 
       <p>
@@ -288,18 +296,22 @@
       </p>
 
       <emu-alg aoid="GetBestMatchUnit">
-        1. If _units_.[[second]] is less than 45, return "second".
-        1. If _units_.[[minute]] is less than 45, return "minute".
-        1. If _units_.[[hour]] is less than 22, return "hour".
-        1. If _units_.[[day]] is less than 26, return "day".
-        1. If _units_.[[week]] is less than 4, return "week".
-        1. If _units_.[[month]] is less than 11, return "month".
+        1. If _units_.[[second]] is less than 60, return "second".
+        1. If _units_.[[minute]] is less than 60, return "minute".
+        1. If _units_.[[hour]] is less than 24, return "hour".
+        1. If _units_.[[day]] is less than 7, return "day".
+        1. If _units_.[[week]] is less than 4.2, return "week".
+        1. If _units_.[[month]] is less than 12, return "month".
         1. If _units_.[[quarter]] is less than 4, return "quarter".
         1. Return "year".
       </emu-alg>
 
       <emu-note>
         It is recommended that implementations use the locale and relative time dependent strings provided by the Common Locale Data Repository (available at <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>).
+      </emu-note>
+
+      <emu-note>
+        Libraries like momentjs are using an arbitrary rounding mechanism to resolve the right unit.
       </emu-note>
     </emu-clause>
 
