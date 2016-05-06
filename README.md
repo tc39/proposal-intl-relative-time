@@ -2,7 +2,7 @@
 
 ### Status
 
-__Stage 0__
+__Stage 1__
 
 Implementation Progress
 
@@ -16,6 +16,7 @@ Backpointers
 
  * Caridy Patiño (@caridy)
  * Eric Ferraiuolo (@ericf)
+ * Zibi Braniecki (@zbraniecki)
 
 ### Reviewers
 
