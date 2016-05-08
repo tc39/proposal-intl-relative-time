@@ -42,7 +42,7 @@
         1. Let _relativeTimeFormat_.[[NumberFormat]] be ? Construct(%NumberFormat%, « _nfLocale_, _nfOptions_ »).
         1. Let _prLocale_ be CreateArrayFromList(« _locale_ »).
         1. Let _prOptions_ be ObjectCreate(%ObjectPrototype%).
-        1. Perform ! CreateDataPropertyOrThrow(_prOptions_, `"style"`, *"cardinal"*).
+        1. Perform ! CreateDataPropertyOrThrow(_prOptions_, *"style"*, *"cardinal"*).
         1. Let _relativeTimeFormat_.[[PluralRules]] be ? Construct(%PluralRules%, « _prLocale_, _prOptions_ »).
         1. Set _relativeTimeFormat_.[[InitializedRelativeTimeFormat]] to *true*.
         1. Return _relativeTimeFormat_.
@@ -58,7 +58,7 @@
 
       <emu-alg>
         1. Assert: _relativeTimeFormat_.[[InitializedRelativeTimeFormat]] is *true*.
-        1. Assert: _value_ is a Number.
+        1. Assert: Type(_value_) is a Number.
         1. If isFinite(_x_) is *false*, then throw a *RangeError* exception.
         1. Let _fields_ be _relativeTimeFormat_.[[Fields]].
         1. Let _style_ be _relativeTimeFormat_.[[Style]].
@@ -90,11 +90,11 @@
         1. Else
           1. Let _tl_ be *"future"*.
         1. Let _po_ be ? Get(_patterns_, _tl_).
-        1. Let _fv_ be ? _relativeTimeFormat_.[[NumberFormat]].format(_v_).
-        1. Let _pr_ be ? _relativeTimeFormat_.[[PluralRule]].select(_v_).
+        1. Let _fv_ be ! FormatNumber(_relativeTimeFormat_.[[NumberFormat]], _v_).
+        1. Let _pr_ be ! ResolvePlural(_relativeTimeFormat_.[[PluralRules]], _v_).
         1. Let _pattern_ be ? Get(_po_, _pr_).
         1. Let _values_ be a new Record.
-        1. Set _values_["0"] to be new Record { [[Type]]: "number", [[Value]]: _fv_ }.
+        1. Set _values_.[[*"0"*]] to be new Record { [[Type]]: "number", [[Value]]: _fv_ }.
         1. Return ? DeconstructPattern(_pattern_, _values_).
       </emu-alg>
     </emu-clause>
@@ -190,7 +190,7 @@
       </p>
 
       <emu-alg>
-        1. Assert: _units_ is a Record.
+        1. Assert: Type(_units_) is a Record.
         1. If _units_.[[Second]] is less than 60, return "Second".
         1. If _units_.[[Minute]] is less than 60, return "Minute".
         1. If _units_.[[Hour]] is less than 24, return "Hour".
