@@ -1,27 +1,20 @@
 <emu-clause id="relativetimeformat-objects">
   <h1>RelativeTimeFormat Objects</h1>
 
-  <emu-clause id="sec-intl-relativetimeformat-constructor">
-    <h1>The Intl.RelativeTimeFormat Constructor</h1>
+  <emu-clause id="sec-intl-relativetimeformat--abstracts">
+    <h1>Abstract Operations for RelativeTimeFormat Objects</h1>
 
-    <p>
-      The RelativeTimeFormat constructor is a standard built-in property of the Intl object. Behaviour common to all service constructor properties of the Intl object is specified in <emu-xref href="#sec-internal-slots"></emu-xref>.
-    </p>
 
     <emu-clause id="sec-InitializeRelativeTimeFormat" aoid="InitializeRelativeTimeFormat">
       <h1>InitializeRelativeTimeFormat (relativeTimeFormat, locales, options)</h1>
 
       <p>
-        The abstract operation InitializeRelativeTimeFormat accepts the arguments _relativeTimeFormat_ (which must be an object), _locales_, and _options_. It initializes _relativeTimeFormat_ as a RelativeTimeFormat object.
-      </p>
-
-      <p>
-        The following steps are taken:
+        The abstract operation InitializeRelativeTimeFormat accepts the arguments _relativeTimeFormat_ (which must be an object), _locales_, and _options_. It initializes _relativeTimeFormat_ as a RelativeTimeFormat object. It performas the following steps:
       </p>
 
       <emu-alg>
-        1. If _relativeTimeFormat_ has an [[initializedIntlObject]] internal slot with value *true*, throw a *TypeError* exception.
-        1. Set _relativeTimeFormat_.[[initializedIntlObject]] to *true*.
+        1. If _relativeTimeFormat_ has an [[InitializedIntlObject]] internal slot with value *true*, throw a *TypeError* exception.
+        1. Set _relativeTimeFormat_.[[InitializedIntlObject]] to *true*.
         1. Let _requestedLocales_ be ? CanonicalizeLocaleList(_locales_).
         1. If _options_ is *undefined*, then
           1. Let _options_ be ObjectCreate(*%ObjectPrototype%*).
@@ -29,33 +22,240 @@
           1. Let _options_ be ? ToObject(_options_).
         1. Let _opt_ be a new Record.
         1. Let _matcher_ be ? GetOption(_options_, *"localeMatcher"*, *"string"*, «*"lookup"*, *"best fit"*», *"best fit"*).
-        1. Set _opt_.[[localeMatcher]] to _matcher_.
-        1. Let _localeData_ be *%RelativeTimeFormat%*.[[localeData]].
-        1. Let _r_ be ResolveLocale(*%RelativeTimeFormat%*.[[availableLocales]], _requestedLocales_, _opt_, *%RelativeTimeFormat%*.[[relevantExtensionKeys]], _localeData_).
-        1. Set _relativeTimeFormat_.[[locale]] to the value of _r_.[[locale]].
-        1. Let _dataLocale_ be _r_.[[dataLocale]].
+        1. Set _opt_.[[LocaleMatcher]] to _matcher_.
+        1. Let _localeData_ be *%RelativeTimeFormat%*.[[LocaleData]].
+        1. Let _r_ be ResolveLocale(*%RelativeTimeFormat%*.[[AvailableLocales]], _requestedLocales_, _opt_, *%RelativeTimeFormat%*.[[RelevantExtensionKeys]], _localeData_).
+        1. Set _relativeTimeFormat_.[[Locale]] to the value of _r_.[[Locale]].
+        1. Let _dataLocale_ be _r_.[[DataLocale]].
         1. Let _s_ be ? GetOption(_options_, *"style"*, *"string"*, «*"long"*, *"short"*, *"narrow"*», *"long"*).
-        1. Set _relativeTimeFormat_.[[style]] to _s_.
+        1. Set _relativeTimeFormat_.[[Style]] to _s_.
         1. Let _u_ be ? GetOption(_options_, *"unit"*, *"string"*, «*"best fit"*, *"second"*, *"minute"*, *"hour"*, *"day"*, *"week"*, *"month"*, *"quarter"*, *"year"*», *"best fit"*).
-        1. Set _relativeTimeFormat_.[[unit]] to _u_.
+        1. Set _relativeTimeFormat_.[[Unit]] to _u_.
         1. Let _dataLocaleData_ be Get(_localeData_, _dataLocale_).
         1. Let _fields_ be Get(_dataLocaleData_, *"fields"*).
         1. Assert: _fields_ is an object (see <emu-xref href="#sec-Intl.RelativeTimeFormat-internal-slots"></emu-xref>).
-        1. Set _relativeTimeFormat_.[[fields]] to _fields_.
-        1. Let _pluralRules_ be Get(_dataLocaleData_, *"pluralRules"*).
-        1. Assert: _pluralRules_ is an object (see <emu-xref href="#sec-Intl.RelativeTimeFormat-internal-slots"></emu-xref>).
-        1. Set _relativeTimeFormat_.[[pluralRule]] to Get(_pluralRules_, *"cardinal"*).
-        1. Let _nf_ be Construct(%NumberFormat%, «[_r_.[[locale]], {minimumIntegerDigits: 2, useGrouping: *false*}»).
-        1. Set _relativeTimeFormat_.[[numberFormat]] to _nf_.format.
-        1. Set _relativeTimeFormat_.[[boundResolve]] to *undefined*.
-        1. Set _relativeTimeFormat_.[[initializedRelativeTimeFormat]] to *true*.
+        1. Set _relativeTimeFormat_.[[Fields]] to _fields_.
+        1. Let _nfLocale_ be CreateArrayFromList(« _locale_ »).
+        1. Let _nfOptions_ be ObjectCreate(%ObjectPrototype%).
+        1. Perform ! CreateDataPropertyOrThrow(_nfOptions_, `"useGrouping"`, *false*).
+        1. Perform ! CreateDataPropertyOrThrow(_nfOptions_, `"minimumIntegerDigits"`, *2*).
+        1. Let _relativeTimeFormat_.[[NumberFormat]] be ? Construct(%NumberFormat%, « _nfLocale_, _nfOptions_ »).
+        1. Let _prLocale_ be CreateArrayFromList(« _locale_ »).
+        1. Let _prOptions_ be ObjectCreate(%ObjectPrototype%).
+        1. Perform ! CreateDataPropertyOrThrow(_prOptions_, *"style"*, *"cardinal"*).
+        1. Let _relativeTimeFormat_.[[PluralRules]] be ? Construct(%PluralRules%, « _prLocale_, _prOptions_ »).
+        1. Set _relativeTimeFormat_.[[InitializedRelativeTimeFormat]] to *true*.
         1. Return _relativeTimeFormat_.
       </emu-alg>
-
     </emu-clause>
 
+    <emu-clause id="sec-PartitionRelativeTimePattern" aoid="PartitionRelativeTimePattern">
+      <h1>PartitionRelativeTimePattern (relativeTimeFormat, x)</h1>
+
+      <p>
+        When the FormatRelativeTime abstract operation is called with arguments _relativeTimeFormat_  and _value_, it returns a String value representing _value_ (interpreted as a time value as specified in ES2016, 20.3.1.1) according to the effective locale and the formatting options of _relativeTimeFormat_.
+      </p>
+
+      <emu-alg>
+        1. Assert: _relativeTimeFormat_.[[InitializedRelativeTimeFormat]] is *true*.
+        1. Assert: Type(_value_) is a Number.
+        1. If isFinite(_x_) is *false*, then throw a *RangeError* exception.
+        1. Let _fields_ be _relativeTimeFormat_.[[Fields]].
+        1. Let _style_ be _relativeTimeFormat_.[[Style]].
+        1. Let _now_ be Call(%Date_now%, *undefined*).
+        1. Let _ms_ be _x_ - _now_.
+        1. Let _units_ be ComputeTimeUnits(_ms_).
+        1. If _relativeTimeFormat_.[[Unit]] is equal to "best fit", then
+          1. Let _unit_ be GetBestMatchUnit(_units_).
+        1. Else
+          1. Let _unit_ be _relativeTimeFormat_.[[unit]].
+        1. If _style_ is equal to "short", then
+          1. Let _entry_ be _unit_ + "-short".
+        1. Else if _style_ is equal to "narrow", then
+          1. Let _entry_ be _unit_ + "-narrow".
+        1. Else
+          1. Let _entry_ be _unit_.
+        1. Let _exists_ be ? HasProperty(_fields_, _entry_).
+        1. If _exists_ is *false*, then
+          1. Let _entry_ be _unit_.
+        1. Let _patterns_ be ? Get(_fields_, _entry_).
+        1. Let _v_ be _units_.[[&lt;_unit_&gt;]].
+        1. If _v_ is between -2 (inclusive) and 2 (inclusive), then
+          1. Let _exists_ be ? HasProperty(_patterns_, ToString(_v_)).
+          1. If _exists_ is *true*, then
+            1. Let _result_ be Get(_patterns_, ToString(_v_)).
+            1. Return _result_.
+        1. If _v_ is less than 0, then
+          1. Let _tl_ be *"past"*.
+        1. Else
+          1. Let _tl_ be *"future"*.
+        1. Let _po_ be ? Get(_patterns_, _tl_).
+        1. Let _fv_ be ! FormatNumber(_relativeTimeFormat_.[[NumberFormat]], _v_).
+        1. Let _pr_ be ! ResolvePlural(_relativeTimeFormat_.[[PluralRules]], _v_).
+        1. Let _pattern_ be ? Get(_po_, _pr_).
+        1. Let _values_ be a new Record.
+        1. Set _values_.[[*"0"*]] to be new Record { [[Type]]: "number", [[Value]]: _fv_ }.
+        1. Return ? DeconstructPattern(_pattern_, _values_).
+      </emu-alg>
+    </emu-clause>
+
+    <emu-clause id="sec-deconstructpattern" aoid="DeconstructPattern">
+      <h1>DeconstructPattern (pattern, placeables)</h1>
+
+      <p>
+        The *DeconstructPattern* abstract operation is called with arguments _pattern_ (which must be a String) and _placeables_ (which must be a Record), and deconstructts the pattern string into a list of parts.
+        Example:
+        <pre>
+        Input:
+          DeconstructPattern("AA{xx}BB{yy}CC", {
+            xx: {type: 'hour', value: '15'},
+            yy: {type: 'minute', value: '06'}
+          });
+
+        Output (List of Records):
+          [
+            {type: 'literal', value: 'AA'},
+            {type: 'hour', value: '15'},
+            {type: 'literal', value: 'BB'},
+            {type: 'minute', value: '06'},
+            {type: 'literal', value: 'CC'}
+          ]
+        </pre>
+      </p>
+      <emu-alg>
+        1. Set _parts_ to be the result of _pattern_.split(/\{([^\}]+)\}/).
+        1. Let _result_ be a new empty List.
+        1. Set _i_ to be *0*.
+        1. Repeat, while _i_ &lt; _parts_.length
+          1. Set _part_ to be _parts_.[_i_].
+          1. If _i_ % 2 is *0*, then
+            1. If _part_.length is &gt; *0*, then
+              1. Add new part record { [[type]]: *"literal"*, [[value]]: _part_ } as a new element on the list _result_.
+          1. Else,
+            1. Set _subst_ to _placeables_.[[_part_]].
+            1. If subst is *undefined*, then
+              1. Throw new *Error* exception.
+            1. If Type(_subst_) is List, then 
+              1. Let _len_ be ? ToLength(? Get(_subst_, *"length"*)).
+              1. Set _i_ to *0*.
+              1. Repeat, while _i_ &lt; *0*
+                1. Add _subst_.[_i_] as a new element on the list _result_.
+            1. Else,
+              1. Add _subst_ as a new element on the list _result_.
+        1. Return _result_.
+      </emu-alg>
+    </emu-clause>
+
+    <emu-clause id="sec-FormatRelativeTime" aoid="FormatRelativeTime">
+      <h1>FormatRelativeTime (relativeTimeFormat, x)</h1>
+
+      <p>
+        The FormatRelativeTime abstract operation is called with arguments _relativeTimeFormat_ (which must be an object initialized as a RelativeTimeFormat) and _x_ (which must be a Number value), and performs the following steps:
+      </p>
+
+      <emu-alg>
+        1. Let _parts_ be ? PartitionRelativeTimePattern(_relativeTimeFormat_, _x_).
+        1. Let _result_ be an empty String.
+        1. For each _part_ in _parts_, do:
+          1. Set _result_ to a String value produced by concatenating _result_ and _part_.[[Value]].
+        1. Return _result_.
+      </emu-alg>
+    </emu-clause>
+
+    <emu-clause id="sec-FormatRelativeTimeToParts" aoid="FormatRelativeTimeToParts">
+      <h1>FormatRelativeTimeToParts (relativeTimeFormat, x)</h1>
+        The FormatRelativeTimeToParts abstract operation is called with arguments _relativeTimeFormat_ (which must be an object initialized as a RelativeTimeFormat) and _x_ (which must be a Number value), and performs the following steps:
+      <p>
+      </p>
+
+      <emu-alg>
+        1. Let _parts_ be ? PartitionRelativeTimePattern(_relativeTimeFormat_, _x_).
+        1. Let _result_ be ArrayCreate(0).
+        1. Let _n_ be 0.
+        1. For each _part_ in _parts_, do:
+          1. Let _O_ be ObjectCreate(%ObjectPrototype%).
+          1. Perform ? CreateDataPropertyOrThrow(_O_, "type", _part_.[[Type]]).
+          1. Perform ? CreateDataPropertyOrThrow(_O_, "value", _part_.[[Value]]).
+          1. Perform ? CreateDataProperty(_result_, ? ToString(_n_), _O_).
+          1. Increment _n_ by 1.
+        1. Return _result_.
+      </emu-alg>
+    </emu-clause>
+
+    <emu-clause id="sec-GetBestMatchUnit" aoid="GetBestMatchUnit">
+      <h1>GetBestMatchUnit (units)</h1>
+
+      <p>
+        When the GetBestMatchUnit abstract operation is called with argument _units_, the following steps are taken:
+      </p>
+
+      <emu-alg>
+        1. Assert: Type(_units_) is a Record.
+        1. If _units_.[[Second]] is less than 60, return "Second".
+        1. If _units_.[[Minute]] is less than 60, return "Minute".
+        1. If _units_.[[Hour]] is less than 24, return "Hour".
+        1. If _units_.[[Day]] is less than 7, return "Day".
+        1. If _units_.[[Week]] is less than 4, return "Week".
+        1. If _units_.[[Month]] is less than 12, return "Month".
+        1. If _units_.[[Quarter]] is less than 4, return "Quarter".
+        1. Return "Year".
+      </emu-alg>
+
+      <emu-note>
+        It is recommended that implementations use the locale and relative time dependent strings provided by the Common Locale Data Repository (available at <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>).
+      </emu-note>
+    </emu-clause>
+
+    <emu-clause id="sec-ComputeTimeUnits" aoid="ComputeTimeUnits">
+      <h1>ComputeTimeUnits (v)</h1>
+
+      <p>
+        When the ComputeTimeUnits abstract operation is called with argument _v_, the following steps are taken:
+      </p>
+
+      <emu-alg>
+        1. Assert: _v_ is a Number.
+        1. Let _units_ be ObjectCreate(*%ObjectPrototype%*).
+        1. Let _rawYear_ be _v_ * 400 / msPer400Years.
+        1. Set _units_.[[Second]] to round(_v_ / msPerSecond).
+        1. Set _units_.[[Minute]] to round(_v_ / msPerMinute).
+        1. Set _units_.[[Hour]] to round(_v_ / msPerHour).
+        1. Set _units_.[[Day]] to round(_v_ / msPerDay).
+        1. Set _units_.[[Week]] to round(_v_ / msPerWeek).
+        1. Set _units_.[[Month]] to round(_rawYear_ * 12).
+        1. Set _units_.[[Quarter]] to round(_rawYear_ * 4).
+        1. Set _units_.[[Year]] to round(_rawYear_).
+        1. Return _units_.
+      </emu-alg>
+
+      <p>where</p>
+
+      <emu-eqn aoid="DaysPerWeek">DaysPerWeek = 7</emu-eqn>
+      <emu-eqn aoid="HoursPerDay">HoursPerDay = 24</emu-eqn>
+      <emu-eqn aoid="MinutesPerHour">MinutesPerHour = 60</emu-eqn>
+      <emu-eqn aoid="SecondsPerMinute">SecondsPerMinute = 60</emu-eqn>
+      <emu-eqn aoid="msPerSecond">msPerSecond = 1000</emu-eqn>
+      <emu-eqn aoid="msPerMinute">msPerMinute = 60000 = msPerSecond &times; SecondsPerMinute</emu-eqn>
+      <emu-eqn aoid="msPerHour">msPerHour = 3600000 = msPerMinute &times; MinutesPerHour</emu-eqn>
+      <emu-eqn aoid="msPerDay">msPerDay = 86400000 = msPerHour &times; HoursPerDay</emu-eqn>
+      <emu-eqn aoid="msPerWeek">msPerWeek = 604800000 = msPerDay &times; DaysPerWeek</emu-eqn>
+      <emu-eqn aoid="msPerWeek">msPer400Years = 88359465600000 = msPerDay &times; 146097</emu-eqn>
+
+      <emu-note>
+        400 years have 146097 days when taking into account the leap year rules. We can not take into consideration the timeline for the leap years because the relativeness of v is not implicit in this abtract operation.
+      </emu-note>
+    </emu-clause>
+  </emu-clause>
+
+  <emu-clause id="sec-intl-relativetimeformat-constructor">
+    <h1>The Intl.RelativeTimeFormat Constructor</h1>
+
+    <p>
+      The RelativeTimeFormat constructor is a standard built-in property of the Intl object. Behaviour common to all service constructor properties of the Intl object is specified in <emu-xref href="#sec-internal-slots"></emu-xref>.
+    </p>
+
     <emu-clause id="sec-Intl.RelativeTimeFormat">
-      <h1>Intl.RelativeTimeFormat([ locales [, options]])</h1>
+      <h1>Intl.RelativeTimeFormat ([ locales [ , options ]])</h1>
 
       <p>
         When the *Intl.RelativeTimeFormat* function is called with optional arguments the following steps are taken:
@@ -64,7 +264,7 @@
       <emu-alg>
         1. If NewTarget is *undefined*, let _newTarget_ be the active function object, else let _newTarget_ be NewTarget.
         1. Let _relativeTimeFormat_ be ? OrdinaryCreateFromConstructor(_newTarget_, *%RelativeTimeFormatPrototype%*).
-        1. Return InitializeRelativeTimeFormat(_relativeTimeFormat_, _locales_, _options_).
+        1. Return ? InitializeRelativeTimeFormat(_relativeTimeFormat_, _locales_, _options_).
       </emu-alg>
     </emu-clause>
   </emu-clause>
@@ -73,7 +273,7 @@
     <h1>Properties of the Intl.RelativeTimeFormat Constructor</h1>
 
     <p>
-      Besides the internal slots and the *length* property (whose value is 0), the Intl.RelativeTimeFormat constructor has the following properties:
+      The Intl.RelativeTimeFormat constructor has the following properties:
     </p>
 
     <emu-clause id="sec-Intl.RelativeTimeFormat.prototype">
@@ -109,11 +309,11 @@
       <h1>Internal slots</h1>
 
       <p>
-        The value of the [[availableLocales]] internal slot is implementation defined within the constraints described in <emu-xref href="#sec-internal-slots"></emu-xref>.
+        The value of the [[AvailableLocales]] internal slot is implementation defined within the constraints described in <emu-xref href="#sec-internal-slots"></emu-xref>.
       </p>
 
       <p>
-        The value of the [[relevantExtensionKeys]] internal slot is [*"rt"*, *"pr"*].
+        The value of the [[RelevantExtensionKeys]] internal slot is [*"rt"*, *"pr"*].
       </p>
 
       <emu-note>
@@ -121,15 +321,15 @@
       </emu-note>
 
       <p>
-        The value of the [[localeData]] internal slot is implementation defined within the constraints described in <emu-xref href="#sec-internal-slots"></emu-xref> and the following additional constraints:
+        The value of the [[LocaleData]] internal slot is implementation defined within the constraints described in <emu-xref href="#sec-internal-slots"></emu-xref> and the following additional constraints:
       </p>
 
       <ul>
         <li>
-            [[localeData]][locale] must have a pluralRules property for all locale values. The value of this property must be an object, which must have a property oridinal, which must be a function. These function expect a numeric argument and the return must be string value *"zero"*, *"one"*, *"two"*, *"few"*, *"many"* or *"other"*. The returned string  represents the pluralization form of the numeric argument as specified in LDML Language Plural Rules.
+            [[LocaleData]][Locale] must have a pluralRules property for all locale values. The value of this property must be an object, which must have a property oridinal, which must be a function. These function expect a numeric argument and the return must be string value *"zero"*, *"one"*, *"two"*, *"few"*, *"many"* or *"other"*. The returned string  represents the pluralization form of the numeric argument as specified in LDML Language Plural Rules.
         </li>
         <li>
-            [[localeData]][locale] must have a fields property for all locale values. The value of this property must be an object, which must have properties second, minute, hour, day, week, month, quarter and year, additionally, it can have the equivalent properties for narrow and short. Each of these properties in turn must be an object, whose value contains future and past pluralization rules, and optionally, it can have unitary representations.
+            [[LocaleData]][Locale] must have a fields property for all locale values. The value of this property must be an object, which must have properties second, minute, hour, day, week, month, quarter and year, additionally, it can have the equivalent properties for narrow and short. Each of these properties in turn must be an object, whose value contains future and past pluralization rules, and optionally, it can have unitary representations.
         </li>
       </ul>
 
@@ -158,7 +358,7 @@
     </emu-clause>
 
     <emu-clause id="sec-Intl.RelativeTimeFormat.prototype-toStringTag">
-      <h1>Intl.RelativeTimeFormat.prototype[@@toStringTag]</h1>
+      <h1>Intl.RelativeTimeFormat.prototype[ @@toStringTag ]</h1>
 
       <p>
         The initial value of the @@toStringTag property is the string value *"Object"*.
@@ -169,150 +369,35 @@
     </emu-clause>
 
     <emu-clause id="sec-Intl.RelativeTimeFormat.prototype.format">
-      <h1>Intl.RelativeTimeFormat.prototype.format</h1>
+      <h1>Intl.RelativeTimeFormat.prototype.format([ value ])</h1>
 
       <p>
-        This named accessor property returns a function that formats a time according to the effective locale and the formatting options of this RelativeTimeFormat object.
-      </p>
-      <p>
-        The value of the [[Get]] attribute is a function that takes the following steps:
+        When the *Intl.RelativeTimeFormat.prototype.format* is called with an optional argument _value_, the following steps are taken:
       </p>
 
       <emu-alg>
-        1. Let _rf_ be this RelativeTimeFormat object.
-        1. If _rf_.[[boundResolve]] is *undefined*, then
-          1. Let _F_ be a new built-in function object as defined in <emu-xref href="#sec-relative-time-format-functions"></emu-xref>.
-          1. The value of _F_’s *length* property is 1.
-          1. Let _bf_ be BoundFunctionCreate(_F_, «*this* value»).
-          1. Set _rf_.[[boundResolve]] to _bf_.
-        1. Return _rf_.[[boundResolve]].
+        1. Let _relativeTimeFormat_ be *this* value.
+        1. If Type(_relativeTimeFormat_) is not Object or _relativeTimeFormat_ does not have an [[InitializedRelativeTimeFormat]] internal slot whose value is *true*, throw a TypeError exception.
+        1. If _value_ is not provided, let _value_ be *undefined*.
+        1. Let _value_ be ? ToNumber(_value_).
+        1. Return ? FormatRelativeTime(_relativeTimeFormat_, _value_).
       </emu-alg>
-
-      <emu-note>
-        The function returned by [[Get]] is bound to this RelativeTimeFormat object so that it can be passed directly to Array.prototype.map or other functions.
-      </emu-note>
-
-      <p>
-        The value of the [[Set]] attribute is *undefined*.
-      </p>
     </emu-clause>
 
-    <emu-clause id="sec-relative-time-format-functions">
-      <h1>Plural Form Functions</h1>
+    <emu-clause id="sec-Intl.RelativeTimeFormat.prototype.formatToParts">
+      <h1>Intl.RelativeTimeFormat.prototype.formatToParts([ value ])</h1>
 
       <p>
-        A RelativeTimeFormat format function is an anonymous function that takes one argument value, and performs the following steps:
+        When the *Intl.RelativeTimeFormat.prototype.formatToParts* is called with an optional argument _value_, the following steps are taken:
       </p>
 
       <emu-alg>
-        1. Let _relativeTimeFormat_ be the *this* value.
-        1. Assert: Type(_relativeTimeFormat_) is Object and _relativeTimeFormat_ has an [[initializedRelativeTimeFormat]] internal slot whose value is *true*.
+        1. Let _relativeTimeFormat_ be *this* value.
+        1. If Type(_relativeTimeFormat_) is not Object or _relativeTimeFormat_ does not have an [[InitializedRelativeTimeFormat]] internal slot whose value is *true*, throw a TypeError exception.
         1. If _value_ is not provided, let _value_ be *undefined*.
-        1. Let _x_ be ? ToNumber(_value_).
-        1. Return FormatRelativeTime(_relativeTimeFormat_, _x_).
+        1. Let _value_ be ? ToNumber(_value_).
+        1. Return ? FormatRelativeTimeToParts(_relativeTimeFormat_, _value_).
       </emu-alg>
-
-      <p>
-        When the FormatRelativeTime abstract operation is called with arguments _relativeTimeFormat_ (which must be an object initialized as a RelativeTimeFormat) and _x_ (which must be a Number value), it returns a String value representing _x_ (interpreted as a time value as specified in ES2015, 20.3.1.1) according to the effective locale and the formatting options of _relativeTimeFormat_.
-      </p>
-
-      <emu-alg aoid="FormatRelativeTime">
-        1. If _x_ is not a finite Number, then throw a *RangeError* exception.
-        1. Let _pluralRule_ be _relativeTimeFormat_.[[pluralRule]].
-        1. Let _fields_ be _relativeTimeFormat_.[[fields]].
-        1. Let _now_ be %Date_now%().
-        1. Let _ms_ be _x_ - _now_.
-        1. Let _numberFormat_ be _relativeTimeFormat_.[[numberFormat]].
-        1. Let _units_ be ComputeTimeUnits(_ms_).
-        1. If _relativeTimeFormat_.[[unit]] is equal to "best fit", then
-          1. Let _unit_ be GetBestMatchUnit(_units_).
-        1. Else
-          1. Let _unit_ be _relativeTimeFormat_.[[unit]].
-        1. If _style_ is equal to "short", then
-          1. Let _entry_ be _unit_ + "-short".
-        1. Else if _style_ is equal to "narrow", then
-          1. Let _entry_ be _unit_ + "-narrow".
-        1. Else
-          1. Let _entry_ be _unit_.
-        1. Let _exists_ be ? HasProperty(_fields_, _entry_).
-        1. If _exists_ is *false*, then
-          1. Let _entry_ be _unit_.
-        1. Let _patterns_ be ? Get(_fields_, _entry_).
-        1. Let _v_ be _units_.[[&lt;_unit_&gt;]].
-        1. If _v_ is between -1 (inclusive) and 1 (inclusive), then
-          1. Let _exists_ be ? HasProperty(_patterns_, ToString(_v_)).
-          1. If _exists_ is *true*, then
-            1. Let _result_ be Get(_patterns_, ToString(_v_)).
-            1. Return _result_.
-        1. If _v_ is less than 0, then
-          1. Let _tl_ be "past".
-        1. Else
-          1. Let _tl_ be "future".
-        1. Let _po_ be ? Get(_patterns_, _tl_).
-        1. Let _fv_ be _numberFormat_(_v_).
-        1. Let _pr_ be _pluralRule_(_v_).
-        1. Let _result_ be ? Get(_po_, _pr_).
-        1. Replace the substring "{0}" within _result_ with _fv_.
-        1. Return _result_.
-      </emu-alg>
-
-      <p>
-        When the ComputeTimeUnits abstract operation is called with argument _v_, the following steps are taken:
-      </p>
-
-      <emu-alg aoid="ComputeTimeUnits">
-        1. Let _units_ be ObjectCreate(*%ObjectPrototype%*).
-        1. Let _rawYear_ be _v_ * 400 / msPer400Years.
-        1. Set _units_.[[second]] to round(_v_ / msPerSecond).
-        1. Set _units_.[[minute]] to round(_v_ / msPerMinute).
-        1. Set _units_.[[hour]] to round(_v_ / msPerHour).
-        1. Set _units_.[[day]] to round(_v_ / msPerDay).
-        1. Set _units_.[[week]] to round(_v_ / msPerWeek).
-        1. Set _units_.[[month]] to round(_rawYear_ * 12).
-        1. Set _units_.[[quarter]] to round(_rawYear_ * 4).
-        1. Set _units_.[[year]] to round(_rawYear_).
-        1. Return _units_.
-      </emu-alg>
-
-      <p>where</p>
-
-      <emu-eqn aoid="DaysPerWeek">DaysPerWeek = 7</emu-eqn>
-      <emu-eqn aoid="HoursPerDay">HoursPerDay = 24</emu-eqn>
-      <emu-eqn aoid="MinutesPerHour">MinutesPerHour = 60</emu-eqn>
-      <emu-eqn aoid="SecondsPerMinute">SecondsPerMinute = 60</emu-eqn>
-      <emu-eqn aoid="msPerSecond">msPerSecond = 1000</emu-eqn>
-      <emu-eqn aoid="msPerMinute">msPerMinute = 60000 = msPerSecond &times; SecondsPerMinute</emu-eqn>
-      <emu-eqn aoid="msPerHour">msPerHour = 3600000 = msPerMinute &times; MinutesPerHour</emu-eqn>
-      <emu-eqn aoid="msPerDay">msPerDay = 86400000 = msPerHour &times; HoursPerDay</emu-eqn>
-      <emu-eqn aoid="msPerWeek">msPerWeek = 604800000 = msPerDay &times; DaysPerWeek</emu-eqn>
-      <emu-eqn aoid="msPerWeek">msPer400Years = 88359465600000 = msPerDay &times; 146097</emu-eqn>
-
-      <emu-note>
-        400 years have 146097 days when taking into account the leap year rules. We can not take into consideration the timeline for the leap years because the relativeness of v is not implicit in this abtract operation.
-      </emu-note>
-
-      <p>
-        When the GetBestMatchUnit abstract operation is called with argument _units_, the following steps are taken:
-      </p>
-
-      <emu-alg aoid="GetBestMatchUnit">
-        1. If _units_.[[second]] is less than 60, return "second".
-        1. If _units_.[[minute]] is less than 60, return "minute".
-        1. If _units_.[[hour]] is less than 24, return "hour".
-        1. If _units_.[[day]] is less than 7, return "day".
-        1. If _units_.[[week]] is less than 4.2, return "week".
-        1. If _units_.[[month]] is less than 12, return "month".
-        1. If _units_.[[quarter]] is less than 4, return "quarter".
-        1. Return "year".
-      </emu-alg>
-
-      <emu-note>
-        It is recommended that implementations use the locale and relative time dependent strings provided by the Common Locale Data Repository (available at <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>).
-      </emu-note>
-
-      <emu-note>
-        Libraries like momentjs are using an arbitrary rounding mechanism to resolve the right unit.
-      </emu-note>
     </emu-clause>
 
     <emu-clause id="sec-Intl.RelativeTimeFormat.prototype.resolvedOptions">
@@ -335,7 +420,7 @@
     </p>
 
     <p>
-      Intl.RelativeTimeFormat instances and other objects that have been successfully initialized as a RelativeTimeFormat have [[initializedIntlObject]] and [[initializedRelativeTimeFormat]] internal slots whose values are *true*.
+      Intl.RelativeTimeFormat instances and other objects that have been successfully initialized as a RelativeTimeFormat have [[InitializedIntlObject]] and [[InitializedRelativeTimeFormat]] internal slots whose values are *true*.
     </p>
 
     <p>
@@ -343,13 +428,9 @@
     </p>
 
     <ul>
-      <li>[[locale]] is a String value with the language tag of the locale whose localization is used for formatting.</li>
-      <li>[[style]] is one of the String values *"long"*, *"short"*, or *"narrow"*, identifying the relative time format style used.</li>
-      <li>[[unit]] is one of the String values *"best fit"*, *"second"*, *"minute"*, *"hour"*, *"day"*, *"week"*, *"month"*, *"quarter"* or *"year"*, identifying the unit of time used.</li>
+      <li>[[Locale]] is a String value with the language tag of the locale whose localization is used for formatting.</li>
+      <li>[[Style]] is one of the String values *"long"*, *"short"*, or *"narrow"*, identifying the relative time format style used.</li>
+      <li>[[Unit]] is one of the String values *"best fit"*, *"second"*, *"minute"*, *"hour"*, *"day"*, *"week"*, *"month"*, *"quarter"* or *"year"*, identifying the unit of time used.</li>
     </ul>
-
-    <p>
-      Finally, objects that have been successfully initialized as a RelativeTimeFormat have a [[boundResolve]] internal slot that caches the function returned by the resolve accessor (<emu-xref href="#sec-Intl.RelativeTimeFormat.prototype.format"></emu-xref>).
-    </p>
   </emu-clause>
 </emu-clause>
