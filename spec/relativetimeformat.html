@@ -62,9 +62,7 @@
         1. If isFinite(_x_) is *false*, then throw a *RangeError* exception.
         1. Let _fields_ be _relativeTimeFormat_.[[Fields]].
         1. Let _style_ be _relativeTimeFormat_.[[Style]].
-        1. Let _now_ be Call(%Date_now%, *undefined*).
-        1. Let _ms_ be _x_ - _now_.
-        1. Let _units_ be ComputeTimeUnits(_ms_).
+        1. Let _units_ be ComputeTimeUnits(_x_).
         1. If _relativeTimeFormat_.[[Unit]] is equal to "best fit", then
           1. Let _unit_ be GetBestMatchUnit(_units_).
         1. Else
