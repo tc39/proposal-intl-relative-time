@@ -313,25 +313,12 @@
       </p>
 
       <p>
-        The value of the [[RelevantExtensionKeys]] internal slot is [*"rt"*, *"pr"*].
+        The value of the [[RelevantExtensionKeys]] internal slot is [].
       </p>
 
       <emu-note>
-        Unicode Technical Standard 35 describes three locale extension keys that are relevant to relative time formatting, "rt" for relative time, and "pr" language plural rules to choose the proper relative time pattern.
+        Unicode Technical Standard 35 describes no locale extension keys that are relevant to relative time formatting.
       </emu-note>
-
-      <p>
-        The value of the [[LocaleData]] internal slot is implementation defined within the constraints described in <emu-xref href="#sec-internal-slots"></emu-xref> and the following additional constraints:
-      </p>
-
-      <ul>
-        <li>
-            [[LocaleData]][Locale] must have a pluralRules property for all locale values. The value of this property must be an object, which must have a property oridinal, which must be a function. These function expect a numeric argument and the return must be string value *"zero"*, *"one"*, *"two"*, *"few"*, *"many"* or *"other"*. The returned string  represents the pluralization form of the numeric argument as specified in LDML Language Plural Rules.
-        </li>
-        <li>
-            [[LocaleData]][Locale] must have a fields property for all locale values. The value of this property must be an object, which must have properties second, minute, hour, day, week, month, quarter and year, additionally, it can have the equivalent properties for narrow and short. Each of these properties in turn must be an object, whose value contains future and past pluralization rules, and optionally, it can have unitary representations.
-        </li>
-      </ul>
 
       <emu-note>
         It is recommended that implementations use the locale data provided by the Common Locale Data Repository (available at <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>).
