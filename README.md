@@ -24,11 +24,14 @@ TBD
 
 ### Informative
 
-This proposal is based on Unicode Relative Date Time Format method.
+This proposal is based on the ICU Relative Date Time Formatter and on the Unicode CLDR Calendar Fields Relative values:
+
+* http://icu-project.org/apiref/icu4j/com/ibm/icu/text/RelativeDateTimeFormatter.html
+* http://www.unicode.org/reports/tr35/tr35-dates.html#Calendar_Fields 
 
 It is also based on the LDML spec, C.11 Language Plural Rules:
 
- * http://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules
+* http://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules
 
 ### Prior Art
 
@@ -37,23 +40,42 @@ TBD
 ### Usage
 
 ```javascript
-let a = new Intl.RelativeTimeFormat("en", {
-    unit: "best fit" // or "second", "minute", "hour", "day", "week", "month", "quarter" or "year" (defaults to "best fit")
+let rtf = new Intl.RelativeTimeFormat("en", {
+    style: "long", // "long" (default), "short", or "narrow"
+    type: "text" // "text" (default), or "numeric".
 });
-console.log(a.format(Date.now() - 1000 * 60 * 60 * 25)); // yields "yesterday"
-console.log(a.format(Date.now() - 1000 * 60 * 60 * 50)); // yields "2 days ago"
 
-let b = new Intl.RelativeTimeFormat("en", {
-    unit: "hour"
-});
-console.log(b.format(Date.now() - 1000 * 60 * 60 * 25)); // yields "25 hours ago"
-console.log(b.format(Date.now() - 1000 * 60 * 60 * 50)); // yields "50 hours ago"
+rtf.format(
+  -1,
+  "day" // "second", "minute", "hour", "day", "week", "month", "quarter", or "year".
+);
+// > "yesterday"
+// or "1 day ago" if it was constructed using {type: "numeric"}
 
-let c = new Intl.RelativeTimeFormat("en", {
-    style: "narrow" // or "short" or "long" (defaults to "long")
-});
-console.log(c.format(Date.now() + 1000 * 60 * 60 * 24 * 30)); // yields "next mo."
-console.log(c.format(Date.now() + 1000 * 60 * 60 * 24 * 60)); // yields "in 2 mo."
+rtf.format(2.15, "day");
+// > "in 2.15 days"
+
+rtf.format(100, "day");
+// > "in 100 days"
+
+rtf.format(0, "day");
+// > "today"
+// or "in 0 days" if it was constructed using {type: "numeric"}
+
+rtf.format(-0, "day");
+// > "today"
+// or "0 days ago" if it was constructed using {type: "numeric"}
+
+let a = new Date(2017, 2, 20);
+let b = new Date(2017, 2, 21);
+let daysInMs = 864e5; // 24 * 60 * 60 * 1000
+rtf.format((a - b) / daysInMs, "day");
+// > "yesterday"
+// or "1 day ago" if it was constructed using {type: "numeric"}
+
+rtf.format((b - a) / daysInMs, "day");
+// > "tomorrow"
+// or "in 1 day" if it was constructed using {type: "numeric"}
 ```
 
 Additionally, by combining `style` and `unit`, you can achieve any of the following results:
