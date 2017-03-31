@@ -62,6 +62,7 @@
         1. If _unit_ is not one of *"second"*, *"minute"*, *"hour"*, *"day"*, *"week"*, *"month"*, *"quarter"*, *"year"*, throw a RangeError exception.
         1. Let _fields_ be _relativeTimeFormat_.[[Fields]].
         1. Let _style_ be _relativeTimeFormat_.[[Style]].
+        1. Let _units_ be ComputeTimeUnits(_x_).
         1. If _style_ is equal to "short", then
           1. Let _entry_ be _unit_ + "-short".
         1. Else if _style_ is equal to "narrow", then
