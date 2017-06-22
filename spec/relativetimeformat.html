@@ -298,7 +298,7 @@
     </emu-clause>
 
     <emu-clause id="sec-Intl.RelativeTimeFormat.prototype.format">
-      <h1>Intl.RelativeTimeFormat.prototype.format([ value[ , unit ] ])</h1>
+      <h1>Intl.RelativeTimeFormat.prototype.format( value, unit )</h1>
 
       <p>
         When the *Intl.RelativeTimeFormat.prototype.format* is called with an optional argument _value_, the following steps are taken:
@@ -307,15 +307,14 @@
       <emu-alg>
         1. Let _relativeTimeFormat_ be *this* value.
         1. If Type(_relativeTimeFormat_) is not Object or _relativeTimeFormat_ does not have an [[InitializedRelativeTimeFormat]] internal slot whose value is *true*, throw a TypeError exception.
-        1. If _value_ is not provided, let _value_ be *undefined*.
-        1. If _unit_ is not provided, let _unit_ be *"undefined"*.
         1. Let _value_ be ? ToNumber(_value_).
+        1. Let _unit_ be ? ToString(_unit_).
         1. Return ? FormatRelativeTime(_relativeTimeFormat_, _value_, _unit_).
       </emu-alg>
     </emu-clause>
 
     <emu-clause id="sec-Intl.RelativeTimeFormat.prototype.formatToParts">
-      <h1>Intl.RelativeTimeFormat.prototype.formatToParts([ value[ , unit ] ])</h1>
+      <h1>Intl.RelativeTimeFormat.prototype.formatToParts( value, unit )</h1>
 
       <p>
         When the *Intl.RelativeTimeFormat.prototype.formatToParts* is called with an optional argument _value_, the following steps are taken:
@@ -324,9 +323,8 @@
       <emu-alg>
         1. Let _relativeTimeFormat_ be *this* value.
         1. If Type(_relativeTimeFormat_) is not Object or _relativeTimeFormat_ does not have an [[InitializedRelativeTimeFormat]] internal slot whose value is *true*, throw a TypeError exception.
-        1. If _value_ is not provided, let _value_ be *undefined*.
-        1. If _unit_ is not provided, let _unit_ be *"undefined"*.
         1. Let _value_ be ? ToNumber(_value_).
+        1. Let _unit_ be ? ToString(_unit_).
         1. Return ? FormatRelativeTimeToParts(_relativeTimeFormat_, _value_, _unit_).
       </emu-alg>
     </emu-clause>
