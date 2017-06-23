@@ -29,6 +29,8 @@
         1. Let _dataLocale_ be _r_.[[DataLocale]].
         1. Let _s_ be ? GetOption(_options_, *"style"*, *"string"*, «*"long"*, *"short"*, *"narrow"*», *"long"*).
         1. Set _relativeTimeFormat_.[[Style]] to _s_.
+        1. Let _t_ be ? GetOption(_options_, `"type"`, `"string"`, «`"numeric"`, `"text"`», `"text"`).
+        1. Set _relativeTimeFormat_.[[Type]] to _t_.
         1. Let _dataLocaleData_ be Get(_localeData_, _dataLocale_).
         1. Let _fields_ be Get(_dataLocaleData_, *"fields"*).
         1. Assert: _fields_ is an object (see <emu-xref href="#sec-Intl.RelativeTimeFormat-internal-slots"></emu-xref>).
@@ -84,8 +86,13 @@
           1. Let _tl_ be *"future"*.
         1. Let _po_ be ? Get(_patterns_, _tl_).
         1. Let _fv_ be ! FormatNumber(_relativeTimeFormat_.[[NumberFormat]], _v_).
-        1. Let _pr_ be ! ResolvePlural(_relativeTimeFormat_.[[PluralRules]], _v_).
-        1. Let _pattern_ be ? Get(_po_, _pr_).
+        1. Let _pattern_ be *undefined*.
+        1. If _relativeTimeFormat_.[[Type]] is "text",
+          1. Let _pattern_ be ? Get(_po_, _v_).
+        1. If _pattern_ is *undefined*,
+          1. Let _pr_ be ! ResolvePlural(_relativeTimeFormat_.[[PluralRules]], _v_).
+          1. Let _pattern_ be ? Get(_po_, _pr_).
+        1. Assert: _pattern_ is a String.
         1. Let _values_ be a new Record.
         1. Set _values_.[[*"0"*]] to be new Record { [[Type]]: "number", [[Value]]: _fv_ }.
         1. Return ? DeconstructPattern(_pattern_, _values_).
@@ -338,7 +345,7 @@
         This function provides access to the locale and formatting options computed during initialization of the object.
       </p>
       <p>
-        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this RelativeTimeFormat object (see <emu-xref href="#sec-properties-of-intl-relativetimeformat-instances"></emu-xref>): locale, style and unit. Properties whose corresponding internal slots are not present are not assigned.
+        The function returns a new object whose properties and attributes are set as if constructed by an object literal assigning to each of the following properties the value of the corresponding internal slot of this RelativeTimeFormat object (see <emu-xref href="#sec-properties-of-intl-relativetimeformat-instances"></emu-xref>): locale, style and type. Properties whose corresponding internal slots are not present are not assigned.
       </p>
     </emu-clause>
   </emu-clause>
