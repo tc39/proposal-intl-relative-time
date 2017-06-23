@@ -247,6 +247,18 @@
         Unicode Technical Standard 35 describes no locale extension keys that are relevant to relative time formatting.
       </emu-note>
 
+      <p>
+        The value of the [[LocaleData]] internal slot is implementation defined within the constraints described in <emu-xref href="#sec-internal-slots"></emu-xref> and the following additional constraints:
+      </p>
+
+      <ul>
+        <li>[[LocaleData]][Locale] has ordinary data properties `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, `"quarter"` and `"year"`. Additional property keys may exist with the previous names concatenated with the strings `"-narrow"` or `"-short"`. The values corresponding to these property keys are objects which contain these two categories of properties:</li>
+        <li><ul>
+        <li>`"future"` and `"past"` properties, which are objects with a property for each of the [[PluralCategories]] in the Locale. The value corresponding to those properties is a pattern which may contain `"{0}"` to be replaced by a formatted number.</li>
+        <li>Optionally, additional properties whose key is the result of ToString of a Number, and whose values are literal Strings which are not treated as templates.</li>
+        </li></ul>
+      </ul>
+
       <emu-note>
         It is recommended that implementations use the locale data provided by the Common Locale Data Repository (available at <a href="http://cldr.unicode.org/">http://cldr.unicode.org/</a>).
       </emu-note>
