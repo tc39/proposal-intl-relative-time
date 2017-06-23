@@ -167,9 +167,9 @@
         1. Let _n_ be 0.
         1. For each _part_ in _parts_, do:
           1. Let _O_ be ObjectCreate(%ObjectPrototype%).
-          1. Perform ? CreateDataPropertyOrThrow(_O_, "type", _part_.[[Type]]).
-          1. Perform ? CreateDataPropertyOrThrow(_O_, "value", _part_.[[Value]]).
-          1. Perform ? CreateDataProperty(_result_, ? ToString(_n_), _O_).
+          1. Perform ! CreateDataPropertyOrThrow(_O_, "type", _part_.[[Type]]).
+          1. Perform ! CreateDataPropertyOrThrow(_O_, "value", _part_.[[Value]]).
+          1. Perform ! CreateDataPropertyOrThrow(_result_, ! ToString(_n_), _O_).
           1. Increment _n_ by 1.
         1. Return _result_.
       </emu-alg>
@@ -192,7 +192,7 @@
 
       <emu-alg>
         1. If NewTarget is *undefined*, let _newTarget_ be the active function object, else let _newTarget_ be NewTarget.
-        1. Let _relativeTimeFormat_ be ? OrdinaryCreateFromConstructor(_newTarget_, *%RelativeTimeFormatPrototype%*).
+        1. Let _relativeTimeFormat_ be ! OrdinaryCreateFromConstructor(_newTarget_, *%RelativeTimeFormatPrototype%*).
         1. Return ? InitializeRelativeTimeFormat(_relativeTimeFormat_, _locales_, _options_).
       </emu-alg>
     </emu-clause>
