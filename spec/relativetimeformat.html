@@ -21,13 +21,13 @@
         1. Else
           1. Let _options_ be ? ToObject(_options_).
         1. Let _opt_ be a new Record.
-        1. Let _matcher_ be ? GetOption(_options_, *"localeMatcher"*, *"string"*, «*"lookup"*, *"best fit"*», *"best fit"*).
+        1. Let _matcher_ be ? GetOption(_options_, `"localeMatcher"`, `"string"`, «`"lookup"`, `"best fit"`», `"best fit"`).
         1. Set _opt_.[[LocaleMatcher]] to _matcher_.
         1. Let _localeData_ be *%RelativeTimeFormat%*.[[LocaleData]].
         1. Let _r_ be ResolveLocale(*%RelativeTimeFormat%*.[[AvailableLocales]], _requestedLocales_, _opt_, *%RelativeTimeFormat%*.[[RelevantExtensionKeys]], _localeData_).
         1. Set _relativeTimeFormat_.[[Locale]] to the value of _r_.[[Locale]].
         1. Let _dataLocale_ be _r_.[[DataLocale]].
-        1. Let _s_ be ? GetOption(_options_, *"style"*, *"string"*, «*"long"*, *"short"*, *"narrow"*», *"long"*).
+        1. Let _s_ be ? GetOption(_options_, `"style"`, `"string"`, «`"long"`, `"short"`, `"narrow"`», `"long"`).
         1. Set _relativeTimeFormat_.[[Style]] to _s_.
         1. Let _dataLocaleData_ be Get(_localeData_, _dataLocale_).
         1. Let _fields_ be Get(_dataLocaleData_, *"fields"*).
@@ -40,7 +40,7 @@
         1. Let _relativeTimeFormat_.[[NumberFormat]] be ? Construct(%NumberFormat%, « _nfLocale_, _nfOptions_ »).
         1. Let _prLocale_ be CreateArrayFromList(« _locale_ »).
         1. Let _prOptions_ be ObjectCreate(%ObjectPrototype%).
-        1. Perform ! CreateDataPropertyOrThrow(_prOptions_, *"style"*, *"cardinal"*).
+        1. Perform ! CreateDataPropertyOrThrow(_prOptions_, `"style"`, `"cardinal"`).
         1. Let _relativeTimeFormat_.[[PluralRules]] be ? Construct(%PluralRules%, « _prLocale_, _prOptions_ »).
         1. Set _relativeTimeFormat_.[[InitializedRelativeTimeFormat]] to *true*.
         1. Return _relativeTimeFormat_.
@@ -59,7 +59,7 @@
         1. Assert: Type(_value_) is a Number.
         1. Assert: Type(_unit_) is a String.
         1. If isFinite(_value_) is *false*, then throw a *RangeError* exception.
-        1. If _unit_ is not one of *"second"*, *"minute"*, *"hour"*, *"day"*, *"week"*, *"month"*, *"quarter"*, *"year"*, throw a RangeError exception.
+        1. If _unit_ is not one of `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, `"quarter"`, `"year"`, throw a RangeError exception.
         1. Let _fields_ be _relativeTimeFormat_.[[Fields]].
         1. Let _style_ be _relativeTimeFormat_.[[Style]].
         1. If _style_ is equal to "short", then
@@ -79,7 +79,7 @@
         1. If _value_ is less than 0, then
           1. Let _tl_ be `"past"`.
         1. Else
-          1. Let _tl_ be *"future"*.
+          1. Let _tl_ be `"future"`.
         1. Let _po_ be ? Get(_patterns_, _tl_).
         1. Let _fv_ be ! FormatNumber(_relativeTimeFormat_.[[NumberFormat]], _value_).
         1. Let _pr_ be ! ResolvePlural(_relativeTimeFormat_.[[PluralRules]], _value_).
@@ -121,7 +121,7 @@
           1. Set _part_ to be _parts_.[_i_].
           1. If _i_ % 2 is *0*, then
             1. If _part_.length is &gt; *0*, then
-              1. Add new part record { [[type]]: *"literal"*, [[value]]: _part_ } as a new element on the list _result_.
+              1. Add new part Record { [[type]]: `"literal"`, [[value]]: _part_ } as a new element on the List _result_.
           1. Else,
             1. Set _subst_ to _placeables_.[[_part_]].
             1. If subst is *undefined*, then
@@ -287,7 +287,7 @@
       <h1>Intl.RelativeTimeFormat.prototype[ @@toStringTag ]</h1>
 
       <p>
-        The initial value of the @@toStringTag property is the string value *"Object"*.
+        The initial value of the @@toStringTag property is the string value `"Object"`.
       </p>
       <p>
         This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.
@@ -355,7 +355,7 @@
 
     <ul>
       <li>[[Locale]] is a String value with the language tag of the locale whose localization is used for formatting.</li>
-      <li>[[Style]] is one of the String values *"long"*, *"short"*, or *"narrow"*, identifying the relative time format style used.</li>
+      <li>[[Style]] is one of the String values `"long"`, `"short"`, or `"narrow"`, identifying the relative time format style used.</li>
     </ul>
   </emu-clause>
 </emu-clause>
