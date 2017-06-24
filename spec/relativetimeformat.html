@@ -262,7 +262,7 @@
 
       <ul>
         <li>
-            [[LocaleData]][Locale] must have a pluralRules property for all locale values. The value of this property must be an object, which must have a property oridinal, which must be a function. These function expect a numeric argument and the return must be string value *"zero"*, *"one"*, *"two"*, *"few"*, *"many"* or *"other"*. The returned string  represents the pluralization form of the numeric argument as specified in LDML Language Plural Rules.
+            [[LocaleData]][Locale] must have a pluralRules property for all locale values. The value of this property must be an object, which must have a property oridinal, which must be a function. These function expect a numeric argument and the return must be string value *"zero"*, *"one"*, *"two"*, *"few"*, *"many"* or *"other"*. The returned string  represents the pluralization form of the numeric argument as specified in LDML Language Plural Rules. The object may also have a numbered property for any integer, containing a pattern of the same form, used to store a more "textual" representation, as opposed to a numeric one.
         </li>
         <li>
             [[LocaleData]][Locale] must have a fields property for all locale values. The value of this property must be an object, which must have properties second, minute, hour, day, week, month, quarter and year, additionally, it can have the equivalent properties for narrow and short. Each of these properties in turn must be an object, whose value contains future and past pluralization rules, and optionally, it can have unitary representations.
