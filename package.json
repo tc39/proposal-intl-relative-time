@@ -9,7 +9,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/caridy/intl-relative-time-spec.git"
+    "url": "https://github.com/tc39/intl-relative-time-spec.git"
   },
   "devDependencies": {
     "ecmarkup": "latest"
