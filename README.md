@@ -54,7 +54,7 @@ TBD
 
 ### Spec
 
-You can view the [spec text](spec/relativetimeformat.html) or rendered as [HTML](https://rawgit.com/tc39/intl-relative-time-spec/g/master/index.html).
+You can view the [spec text](spec/relativetimeformat.html) or rendered as [HTML](https://rawgit.com/tc39/proposal-intl-relative-time/master/index.html).
 
 ### Technical Design
 
