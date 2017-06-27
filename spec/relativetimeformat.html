@@ -77,7 +77,7 @@
         1. Let _exists_ be ? HasProperty(_patterns_, ToString(_v_)).
         1. If _exists_ is *true*, then
           1. Let _result_ be Get(_patterns_, ToString(_v_)).
-          1. Return _result_.
+          1. Return a List containing the Record { [[Type]]: _literal_, [[Value]]: _result_ }.
         1. If _v_ is less than 0, then
           1. Let _tl_ be *"past"*.
         1. Else
@@ -87,7 +87,7 @@
         1. Let _pr_ be ! ResolvePlural(_relativeTimeFormat_.[[PluralRules]], _v_).
         1. Let _pattern_ be ? Get(_po_, _pr_).
         1. Let _values_ be a new Record.
-        1. Set _values_.[[*"0"*]] to be new Record { [[Type]]: "number", [[Value]]: _fv_ }.
+        1. Set _values_.[[*"0"*]] to be new Record { [[Type]]: _unit_, [[Value]]: _fv_ }.
         1. Return ? DeconstructPattern(_pattern_, _values_).
       </emu-alg>
     </emu-clause>
