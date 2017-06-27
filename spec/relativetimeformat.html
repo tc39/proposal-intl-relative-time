@@ -84,55 +84,45 @@
         1. Let _fv_ be ! FormatNumber(_relativeTimeFormat_.[[NumberFormat]], _value_).
         1. Let _pr_ be ! ResolvePlural(_relativeTimeFormat_.[[PluralRules]], _value_).
         1. Let _pattern_ be ? Get(_po_, _pr_).
-        1. Let _values_ be a new Record.
-        1. Set _values_.[[*"0"*]] to be new Record { [[Type]]: "number", [[Value]]: _fv_ }.
-        1. Return ? DeconstructPattern(_pattern_, _values_).
+        1. Return ? MakePartsList(_pattern_, _unit_, _fv_).
       </emu-alg>
     </emu-clause>
 
-    <emu-clause id="sec-deconstructpattern" aoid="DeconstructPattern">
-      <h1>DeconstructPattern (pattern, placeables)</h1>
+    <emu-clause id="sec-makepartslist" aoid="makepartslist">
+      <h1>MakePartsList ( parts, unit, value )</h1>
 
       <p>
-        The *DeconstructPattern* abstract operation is called with arguments _pattern_ (which must be a String) and _placeables_ (which must be a Record), and deconstructts the pattern string into a list of parts.
+        The MakePartsList abstract operation is called with arguments _parts_, a pattern String, _type_, a String, and _value_ a String.
+        <emu-note>
         Example:
         <pre>
-        Input:
-          DeconstructPattern("AA{xx}BB{yy}CC", {
-            xx: {type: 'hour', value: '15'},
-            yy: {type: 'minute', value: '06'}
-          });
+          MakePartsList("AA{0}BB", "hour", "15")  --&lt;
 
         Output (List of Records):
           [
             {type: 'literal', value: 'AA'},
             {type: 'hour', value: '15'},
             {type: 'literal', value: 'BB'},
-            {type: 'minute', value: '06'},
-            {type: 'literal', value: 'CC'}
           ]
         </pre>
       </p>
       <emu-alg>
-        1. Set _parts_ to be the result of _pattern_.split(/\{([^\}]+)\}/).
         1. Let _result_ be a new empty List.
-        1. Set _i_ to be *0*.
-        1. Repeat, while _i_ &lt; _parts_.length
-          1. Set _part_ to be _parts_.[_i_].
-          1. If _i_ % 2 is *0*, then
-            1. If _part_.length is &gt; *0*, then
-              1. Add new part Record { [[type]]: `"literal"`, [[value]]: _part_ } as a new element on the List _result_.
-          1. Else,
-            1. Set _subst_ to _placeables_.[[_part_]].
-            1. If subst is *undefined*, then
-              1. Throw new *Error* exception.
-            1. If Type(_subst_) is List, then 
-              1. Let _len_ be ? ToLength(? Get(_subst_, *"length"*)).
-              1. Set _i_ to *0*.
-              1. Repeat, while _i_ &lt; *0*
-                1. Add _subst_.[_i_] as a new element on the list _result_.
-            1. Else,
-              1. Add _subst_ as a new element on the list _result_.
+        1. Let _beginIndex_ be Call(%StringProto_indexOf%, _pattern_, "{", *0*).
+        1. Let _length_ be ! Get(_parts_, `"length"`).
+        1. Assert: _length_ is a non-negative integer.
+        1. Repeat while _beginIndex_ is an integer index into _pattern_:
+          1. Set _endIndex_ to Call(%StringProto_indexOf%, _pattern_, "}", _beginIndex_)
+          1. Assert: _endIndex_ is not -1, otherwise the pattern would be malformed.
+          1. If _beginIndex_ is greater than _nextIndex_, then:
+            1. Let _literal_ be a substring of _pattern_ from position _nextIndex_, inclusive, to position _beginIndex_, exclusive.
+            1. Add new part record { [[Type]]: `"literal"`, [[Value]]: _literal_ } as a new element of the list _result_.
+          1. Let _p_ be the substring of _pattern_ from position _beginIndex_, exclusive, to position _endIndex_, exclusive.
+          1. Assert: _p_ is `"0"`.
+          1. Add new part Record { [[type]]: _type_, [[value]]: _value_ } as a new element on the List _result_.
+        1. If _nextIndex_ is less than _length_, then:
+          1. Let _literal_ be the substring of _pattern_ from position _nextIndex_, exclusive, to position _length_, exclusive.
+          1. Add new part record { [[Type]]: `"literal"`, [[Value]]: _literal_ } as a new element of the list _result_.
         1. Return _result_.
       </emu-alg>
     </emu-clause>
