@@ -77,7 +77,7 @@
         1. Let _exists_ be ? HasProperty(_patterns_, ToString(_v_)).
         1. If _exists_ is *true*, then
           1. Let _result_ be Get(_patterns_, ToString(_v_)).
-          1. Return a List containing the Record { [[Type]]: _literal_, [[Value]]: _result_ }.
+          1. Return a List containing the Record { [[Type]]: `"literal"`, [[Value]]: _result_ }.
         1. If _v_ is less than 0, then
           1. Let _tl_ be *"past"*.
         1. Else
