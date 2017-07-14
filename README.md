@@ -135,7 +135,7 @@ let rtf = new Intl.RelativeTimeFormat("en", {style: "short"});
 
 ### Intl.RelativeTimeFormat.prototype.format(value, unit)
 
-The *Intl.RelativeTimeFormat.prototype.format* property returns a getter function that formats a *value* and *unit* according to the locale and formatting options of this *Intl.RelativeTimeFormat* object.
+The *Intl.RelativeTimeFormat.prototype.format* method formats a *value* and *unit* according to the locale and formatting options of this *Intl.RelativeTimeFormat* object.
 
 While this method automatically provides the correct plural forms, the grammatical form is otherwise as neutral as possible. It is the caller's responsibility to handle cut-off logic such as deciding between displaying "in 7 days" or "in 1 week". This API does not support relative dates involving compound units. e.g "in 5 days and 4 hours".
 
@@ -261,6 +261,23 @@ in 1 sec.
 1 sec. ago
 2 sec. ago
 ```
+### Intl.RelativeTimeFormat.prototype.formatToParts(value, unit)
+
+The *Intl.RelativeTimeFormat.prototype.formatToParts* method is a version of the `format` method which it returns an Array of Objects which represent "parts" of the object. These objects have two properties: `type` is the unit name or the string `"literal"`, and `value`, which is the String which is the component of the output.
+
+#### Example
+
+```js
+let rtf = new Intl.RelativeTimeFormat("en");
+
+// Format relative time using the day unit.
+rtf.formatToParts(-1, "day");
+// > [{ type: "literal", value: "yesterday"}]
+
+rtf.formatToParts(100, "day");
+// > [{ type: "literal", value: "in "}, { type: "day", value: "100"}, { type: "literal", value: " days"}]
+```
+
 
 ## Development
 
