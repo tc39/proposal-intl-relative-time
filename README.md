@@ -102,7 +102,7 @@ Relative time is used to display date distances, therefore the the natural form 
 
 #### Take number as input rather than exposing the underlying database
 
-An idea has been floated, in the context of "the extensible web", of just exposing the engine's copy of the CLDR database rather than a higher-level interface would be better. In the case of this specification, there is already a JS object model ready to go--the locale database is represented internallyin the spec as a JavaScript object.
+An idea has been floated, in the context of "the extensible web", of just exposing the engine's copy of the CLDR database rather than a higher-level interface would be better. In the case of this specification, there is already a JS object model ready to go--the locale database is represented internally in the spec as a JavaScript object.
 
 However, we opted not to go that route for a couple reasons:
 - As described above, the API is already fairly low-level, taking numbers rather than dates.
