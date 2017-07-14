@@ -119,7 +119,7 @@
             1. Add new part record { [[Type]]: `"literal"`, [[Value]]: _literal_ } as a new element of the list _result_.
           1. Let _p_ be the substring of _pattern_ from position _beginIndex_, exclusive, to position _endIndex_, exclusive.
           1. Assert: _p_ is `"0"`.
-          1. Add new part Record { [[type]]: _type_, [[value]]: _value_ } as a new element on the List _result_.
+          1. Add new part Record { [[Type]]: _type_, [[Value]]: _value_ } as a new element on the List _result_.
         1. If _nextIndex_ is less than _length_, then:
           1. Let _literal_ be the substring of _pattern_ from position _nextIndex_, exclusive, to position _length_, exclusive.
           1. Add new part record { [[Type]]: `"literal"`, [[Value]]: _literal_ } as a new element of the list _result_.
@@ -212,7 +212,7 @@
       </p>
 
       <emu-alg>
-        1. Let _availableLocales_ be *%RelativeTimeFormat%*.[[availableLocales]].
+        1. Let _availableLocales_ be *%RelativeTimeFormat%*.[[AvailableLocales]].
         1. Let _requestedLocales_ be CanonicalizeLocaleList(_locales_).
         1. Return SupportedLocales(_availableLocales_, _requestedLocales_, _options_).
       </emu-alg>
@@ -262,7 +262,7 @@
       The Intl.RelativeTimeFormat prototype object is itself an ordinary object. %RelativeTimeFormatPrototype% is not an Intl.RelativeTimeFormat instance and does not have an [[InitializedRelatimveTimeFormat]] internal slot or any of the other internal slots of Intl.RelativeTimeFormat instance objects.
     </p>
     <p>
-      In the following descriptions of functions that are properties or [[Get]] attributes of properties of *%RelativeTimeFormatPrototype%*, the phrase "this RelativeTimeFormat object" refers to the object that is the this  value for the invocation of the function; a *TypeError* exception is thrown if the this value is not an object or an object that does not have an [[initializedRelativeTimeFormat]] internal slot with value *true*.
+      In the following descriptions of functions that are properties or [[Get]] attributes of properties of *%RelativeTimeFormatPrototype%*, the phrase "this RelativeTimeFormat object" refers to the object that is the this  value for the invocation of the function; a *TypeError* exception is thrown if the this value is not an object or an object that does not have an [[InitializedRelativeTimeFormat]] internal slot with value *true*.
     </p>
 
     <emu-clause id="sec-Intl.RelativeTimeFormat.prototype.constructor">
