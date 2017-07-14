@@ -19,7 +19,7 @@ let rtf = new Intl.RelativeTimeFormat("en", {
 // Format relative time using the day unit.
 rtf.format(
   -1,
-  "day" // "year", "quarter", "month", "week", "day", "sun", "mon", "tue", "wed", "thu", "fri", "sat", "hour", "minute", or "second".
+  "day" // "year", "quarter", "month", "week", "day", "hour", "minute", or "second".
 );
 // > "yesterday"
 ```
@@ -98,7 +98,17 @@ Relative time is used to display date distances, therefore the the natural form 
 1. Basically, taking a number as input for the format method instead of a date object significantly simplifies the scope of this proposal while it still fully addresses the main objective which is to provide i18n building blocks to address this problem realm.
 2. Taking a date object means we should implement the comparison logic (relative time is about date distance between target and source dates). The source date is usually *now*, but not always. We would have to address modifying that. See [#4](https://github.com/tc39/proposal-intl-relative-time/issues/4).
 3. Taking a date object also means we should allow for different calendar calculations, which implies *Date* should support it. See [#6](https://github.com/tc39/proposal-intl-relative-time/issues/6) and [#13](https://github.com/tc39/proposal-intl-relative-time/issues/13).
-4. Taking a date object suggests we should be able to implement a *bestFit* algorithm, which has its own API challenges with respect to standardizing an approach that works for all cases. See [#7](https://github.com/tc39/proposal-intl-relative-time/issues/7), [#14](https://github.com/tc39/proposal-intl-relative-time/issues/14), and [#15](https://github.com/tc39/proposal-intl-relative-time/issues/15). 
+4. Taking a date object suggests we should be able to implement a *bestFit* algorithm, which has its own API challenges with respect to standardizing an approach that works for all cases. See [#7](https://github.com/tc39/proposal-intl-relative-time/issues/7), [#14](https://github.com/tc39/proposal-intl-relative-time/issues/14), and [#15](https://github.com/tc39/proposal-intl-relative-time/issues/15). We'd probably need to provide a flag for users to fill, with no default setting, to choose between options for calendar calculation.
+
+#### Take number as input rather than exposing the underlying database
+
+An idea has been floated, in the context of "the extensible web", of just exposing the engine's copy of the CLDR database rather than a higher-level interface would be better. In the case of this specification, there is already a JS object model ready to go--the locale database is represented internallyin the spec as a JavaScript object.
+
+However, we opted not to go that route for a couple reasons:
+- As described above, the API is already fairly low-level, taking numbers rather than dates.
+- Although there are clearly use cases for different policies about rounding dates into units, we haven't come across a use case for seeing the underlying data
+- This new API is analogous to previous APIs, which should be useful for people learning the system.
+- CLDR changes schema over time; if the data model improves, implementations can transparently upgrade users to better results with the same API. However, if we freeze things to the current logic, the old data model would need to be emulated.
 
 #### Difference between this and UnitFormat
 
@@ -135,7 +145,7 @@ let rtf = new Intl.RelativeTimeFormat("en", {style: "short"});
 
 ### Intl.RelativeTimeFormat.prototype.format(value, unit)
 
-The *Intl.RelativeTimeFormat.prototype.format* property returns a getter function that formats a *value* and *unit* according to the locale and formatting options of this *Intl.RelativeTimeFormat* object.
+The *Intl.RelativeTimeFormat.prototype.format* method formats a *value* and *unit* according to the locale and formatting options of this *Intl.RelativeTimeFormat* object.
 
 While this method automatically provides the correct plural forms, the grammatical form is otherwise as neutral as possible. It is the caller's responsibility to handle cut-off logic such as deciding between displaying "in 7 days" or "in 1 week". This API does not support relative dates involving compound units. e.g "in 5 days and 4 hours".
 
@@ -145,7 +155,7 @@ Numeric value to use in the relative time internationalized message.
 
 #### unit
 
-Unit to use in the relative time internationalized message. Possible values are: *"year"*, *"quarter"*, *"month"*, *"week"*, *"day"*, *"sun"*, *"mon"*, *"tue"*, *"wed"*, *"thu"*, *"fri"*, *"sat"*, *"hour"*, *"minute"*, *"second"*.
+Unit to use in the relative time internationalized message. Possible values are: *"year"*, *"quarter"*, *"month"*, *"week"*, *"day"*, *"hour"*, *"minute"*, *"second"*.
 
 #### Example
 
@@ -260,70 +270,24 @@ in 1 sec.
 in 1 sec.
 1 sec. ago
 2 sec. ago
-last Sunday
-this Sunday
-next Sunday
-last Sun.
-this Sun.
-next Sun.
-last Su
-this Su
-next Su
-last Monday
-this Monday
-next Monday
-last Mon.
-this Mon.
-next Mon.
-last M
-this M
-next M
-last Tuesday
-this Tuesday
-next Tuesday
-last Tue.
-this Tue.
-next Tue.
-last Tu
-this Tu
-next Tu
-last Wednesday
-this Wednesday
-next Wednesday
-last Wed.
-this Wed.
-next Wed.
-last W
-this W
-next W
-last Thursday
-this Thursday
-next Thursday
-last Thu.
-this Thu.
-next Thu.
-last Th
-this Th
-next Th
-last Friday
-this Friday
-next Friday
-last Fri.
-this Fri.
-next Fri.
-last F
-this F
-next F
-last Saturday
-this Saturday
-next Saturday
-last Sat.
-this Sat.
-next Sat.
-last Sa
-this Sa
-next Sa
 ```
+### Intl.RelativeTimeFormat.prototype.formatToParts(value, unit)
+
+The *Intl.RelativeTimeFormat.prototype.formatToParts* method is a version of the `format` method which it returns an Array of Objects which represent "parts" of the object. These objects have two properties: `type` is the unit name or the string `"literal"`, and `value`, which is the String which is the component of the output.
+
+#### Example
+
+```js
+let rtf = new Intl.RelativeTimeFormat("en");
+
+// Format relative time using the day unit.
+rtf.formatToParts(-1, "day");
+// > [{ type: "literal", value: "yesterday"}]
+
+rtf.formatToParts(100, "day");
+// > [{ type: "literal", value: "in "}, { type: "day", value: "100"}, { type: "literal", value: " days"}]
+```
+
 
 ## Development
 
