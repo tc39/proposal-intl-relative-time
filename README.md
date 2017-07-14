@@ -100,6 +100,16 @@ Relative time is used to display date distances, therefore the the natural form 
 3. Taking a date object also means we should allow for different calendar calculations, which implies *Date* should support it. See [#6](https://github.com/tc39/proposal-intl-relative-time/issues/6) and [#13](https://github.com/tc39/proposal-intl-relative-time/issues/13).
 4. Taking a date object suggests we should be able to implement a *bestFit* algorithm, which has its own API challenges with respect to standardizing an approach that works for all cases. See [#7](https://github.com/tc39/proposal-intl-relative-time/issues/7), [#14](https://github.com/tc39/proposal-intl-relative-time/issues/14), and [#15](https://github.com/tc39/proposal-intl-relative-time/issues/15). We'd probably need to provide a flag for users to fill, with no default setting, to choose between options for calendar calculation.
 
+#### Take number as input rather than exposing the underlying database
+
+An idea has been floated, in the context of "the extensible web", of just exposing the engine's copy of the CLDR database rather than a higher-level interface would be better. In the case of this specification, there is already a JS object model ready to go--the locale database is represented internallyin the spec as a JavaScript object.
+
+However, we opted not to go that route for a couple reasons:
+- As described above, the API is already fairly low-level, taking numbers rather than dates.
+- Although there are clearly use cases for different policies about rounding dates into units, we haven't come across a use case for seeing the underlying data
+- This new API is analogous to previous APIs, which should be useful for people learning the system.
+- CLDR changes schema over time; if the data model improves, implementations can transparently upgrade users to better results with the same API. However, if we freeze things to the current logic, the old data model would need to be emulated.
+
 #### Difference between this and UnitFormat
 
 The fundamental difference between RelativeTimeFormat and UnitFormat is that RelativeTimeFormat displays a relative unit (e.g., `5 days ago` or `in 5 days`) while the UnitFormat displays an absolut unit (e.g., `-5 meters` or `5 meters`). Note that RelativeTimeFormat uses different internationalized messages based on the value sign direction, while UnitFormat uses the same internationalized message for all values.
