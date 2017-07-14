@@ -1,56 +1,170 @@
-## `Intl.RelativeTimeFormat` API Specification [draft]
+# `Intl.RelativeTimeFormat` API Specification [draft]
 
-### Status
+## Overview
+
+### Motivation
+
+Due to common use, relative time formatted values exist in a majority of websites and are available in the majority of the frameworks (e.g., React, via [react-intl](https://github.com/yahoo/react-intl) and [react-globalize](https://github.com/globalizejs/react-globalize); Ember, via [ember-intl](https://github.com/ember-intl/ember-intl)). Popular localization libraries like [momentjs](https://momentjs.com/), [formatjs](https://formatjs.io/), [globalizejs](http://globalizejs.com/), and [others](https://github.com/rxaviers/javascript-globalization) had implemented a formatting process for relative time values as well.
+
+It is highly probable that the majority of current relative time formatting implementations require a large portion of CLDR raw or compiled data to format relative time values. Bringing this into the platform will improve performance of the web and developer productivity as they no longer have to bring extra weight to format relative time values.
+
+### Usage
+
+```js
+// Create a relative time formatter in your locale.
+let rtf = new Intl.RelativeTimeFormat("en", {
+    style: "long", // "long" (default), "short", or "narrow"
+});
+
+// Format relative time using the day unit.
+rtf.format(
+  -1,
+  "day" // "year", "quarter", "month", "week", "day", "hour", "minute", or "second".
+);
+// > "yesterday"
+```
+
+### Implementation Status
 
 __Stage 1__
 
 Implementation Progress
 
- * Polyfill (in progress)
+- Polyfill (in progress)
 
 Backpointers
 
- * https://github.com/tc39/ecma402/issues/35
+- https://github.com/tc39/ecma402/issues/35
 
-### Authors
+#### Authors
 
- * Caridy Patiño (@caridy)
- * Eric Ferraiuolo (@ericf)
- * Zibi Braniecki (@zbraniecki)
+- Caridy Patiño (@caridy)
+- Eric Ferraiuolo (@ericf)
+- Zibi Braniecki (@zbraniecki)
+- Rafael Xavier (@rxaviers)
+- Daniel Ehrenberg (@littledan) 
 
-### Reviewers
+#### Reviewers
 
 TBD
 
-### Informative
+## Proposal
+
+`Intl.RelativeTimeFormat` is a low level API to facilitate libraries and frameworks to format relative time in a localized fashion by providing internationalized messages for date and time fields, using customary word or phrase when available.
+
+### Spec
+
+You can view the [spec text](spec/relativetimeformat.html) or rendered as [HTML](https://rawgit.com/tc39/proposal-intl-relative-time/master/index.html).
+
+### Technical Design
 
 This proposal is based on the ICU Relative Date Time Formatter and on the Unicode CLDR Calendar Fields Relative values:
 
-* http://icu-project.org/apiref/icu4j/com/ibm/icu/text/RelativeDateTimeFormatter.html
-* http://www.unicode.org/reports/tr35/tr35-dates.html#Calendar_Fields 
+- http://icu-project.org/apiref/icu4j/com/ibm/icu/text/RelativeDateTimeFormatter.html
+- http://www.unicode.org/reports/tr35/tr35-dates.html#Calendar_Fields 
 
 It is also based on the LDML spec, C.11 Language Plural Rules:
 
-* http://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules
+- http://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules
 
-### Prior Art
+#### Prior Art
 
-TBD
+- Java
 
-### Usage
+  - [ICU](http://icu-project.org/apiref/icu4j/com/ibm/icu/text/RelativeDateTimeFormatter.html): `com.ibm.icu.impl.RelativeDateFormat`
+  - `org.ocpsoft.prettytime.PrettyTime`
 
-```javascript
-let rtf = new Intl.RelativeTimeFormat("en", {
-    style: "long", // "long" (default), "short", or "narrow"
-    type: "text" // "text" (default), or "numeric".
-});
+- Ruby
 
-rtf.format(
-  -1,
-  "day" // "second", "minute", "hour", "day", "week", "month", "quarter", or "year".
-);
+  ```ruby
+  include ActionView::Helpers::DateHelper
+  def index
+    @sexy_date = time_ago_in_words(Date.today - 1)
+  end
+  ```
+
+#### Naming
+
+For consistency with `Intl.NumberFormat` and `Intl.DateTimeFormat`, we have chosen a similar form for this new feature. The creation of `Intl.RelativeTimeFormat` instance is an expensive operation that requires resolution of locale data, and most likely, libraries will attempt to cache those instances, just like they do for `Intl.NumberFormat` and `Intl.DateTimeFormat`.
+
+We have also chosen `style` as the primary form of switching between different formatting form for consistency with `Intl.NumberFormat`, and `Intl.DateTimeFormat`.
+
+Since this new feature does format a provided value just like instances of `Intl.NumberFormat`, and `Intl.DateTimeFormat`, we have chosen the same form by provided a `format(value)` method of the instance, which returns a formatted string value.
+
+#### Take number instead of date object for input
+
+Relative time is used to display date distances, therefore the the natural form of input should intuitively be a date object. Although, in this API we chose to take a number instead due to the following reasons:
+
+1. Basically, taking a number as input for the format method instead of a date object significantly simplifies the scope of this proposal while it still fully addresses the main objective which is to provide i18n building blocks to address this problem realm.
+2. Taking a date object means we should implement the comparison logic (relative time is about date distance between target and source dates). The source date is usually *now*, but not always. We would have to address modifying that. See [#4](https://github.com/tc39/proposal-intl-relative-time/issues/4).
+3. Taking a date object also means we should allow for different calendar calculations, which implies *Date* should support it. See [#6](https://github.com/tc39/proposal-intl-relative-time/issues/6) and [#13](https://github.com/tc39/proposal-intl-relative-time/issues/13).
+4. Taking a date object suggests we should be able to implement a *bestFit* algorithm, which has its own API challenges with respect to standardizing an approach that works for all cases. See [#7](https://github.com/tc39/proposal-intl-relative-time/issues/7), [#14](https://github.com/tc39/proposal-intl-relative-time/issues/14), and [#15](https://github.com/tc39/proposal-intl-relative-time/issues/15). We'd probably need to provide a flag for users to fill, with no default setting, to choose between options for calendar calculation.
+
+#### Take number as input rather than exposing the underlying database
+
+An idea has been floated, in the context of "the extensible web", of just exposing the engine's copy of the CLDR database rather than a higher-level interface would be better. In the case of this specification, there is already a JS object model ready to go--the locale database is represented internally in the spec as a JavaScript object.
+
+However, we opted not to go that route for a couple reasons:
+- As described above, the API is already fairly low-level, taking numbers rather than dates.
+- Although there are clearly use cases for different policies about rounding dates into units, we haven't come across a use case for seeing the underlying data
+- This new API is analogous to previous APIs, which should be useful for people learning the system.
+- CLDR changes schema over time; if the data model improves, implementations can transparently upgrade users to better results with the same API. However, if we freeze things to the current logic, the old data model would need to be emulated.
+
+#### Difference between this and UnitFormat
+
+The fundamental difference between RelativeTimeFormat and UnitFormat is that RelativeTimeFormat displays a relative unit (e.g., `5 days ago` or `in 5 days`) while the UnitFormat displays an absolut unit (e.g., `-5 meters` or `5 meters`). Note that RelativeTimeFormat uses different internationalized messages based on the value sign direction, while UnitFormat uses the same internationalized message for all values.
+
+##### Count downs, e.g., 15 days, 0 hours, 27 minutes, and 52 seconds
+
+A count down for example is a mix of UnitFormat and ListFormat and is not a RelativeTimeFormat.
+
+### API
+
+#### Intl.RelativeTimeFormat([locales[, options]])
+
+The *Intl.RelativeTimeFormat* object is a constructor for objects that enable language sensitive reltive time formatting.
+
+#### locales
+
+Optional. A string with a BCP 47 language tag, or an array of such strings. For the general form and interpretation of the `locales` argument, see the [Intl page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
+
+#### options
+
+Optional. An object with some or all of the following properties:
+
+##### options.style
+
+The length of the internationalized message. Possible values are: *"long"* (default, e.g., `in 1 month`); *"short"* (e.g., `in 1 mo.`), or "narrow" (e.g., `in 1 mo.`). The narrow style could be similar to the short style for some locales.
+
+#### Example
+
+```js
+// Create a relative time formatter in your locale.
+let rtf = new Intl.RelativeTimeFormat("en", {style: "short"});
+```
+
+### Intl.RelativeTimeFormat.prototype.format(value, unit)
+
+The *Intl.RelativeTimeFormat.prototype.format* method formats a *value* and *unit* according to the locale and formatting options of this *Intl.RelativeTimeFormat* object.
+
+While this method automatically provides the correct plural forms, the grammatical form is otherwise as neutral as possible. It is the caller's responsibility to handle cut-off logic such as deciding between displaying "in 7 days" or "in 1 week". This API does not support relative dates involving compound units. e.g "in 5 days and 4 hours".
+
+#### value
+
+Numeric value to use in the relative time internationalized message.
+
+#### unit
+
+Unit to use in the relative time internationalized message. Possible values are: *"year"*, *"quarter"*, *"month"*, *"week"*, *"day"*, *"hour"*, *"minute"*, *"second"*.
+
+#### Example
+
+```js
+let rtf = new Intl.RelativeTimeFormat("en");
+
+// Format relative time using the day unit.
+rtf.format(-1, "day");
 // > "yesterday"
-// or "1 day ago" if it was constructed using {type: "numeric"}
 
 rtf.format(2.15, "day");
 // > "in 2.15 days"
@@ -60,25 +174,12 @@ rtf.format(100, "day");
 
 rtf.format(0, "day");
 // > "today"
-// or "in 0 days" if it was constructed using {type: "numeric"}
 
 rtf.format(-0, "day");
 // > "today"
-// or "0 days ago" if it was constructed using {type: "numeric"}
-
-let a = new Date(2017, 2, 20);
-let b = new Date(2017, 2, 21);
-let daysInMs = 864e5; // 24 * 60 * 60 * 1000
-rtf.format((a - b) / daysInMs, "day");
-// > "yesterday"
-// or "1 day ago" if it was constructed using {type: "numeric"}
-
-rtf.format((b - a) / daysInMs, "day");
-// > "tomorrow"
-// or "in 1 day" if it was constructed using {type: "numeric"}
 ```
 
-Additionally, by combining `style` and `unit`, you can achieve any of the following results:
+Additionally, by combining the class option `style` and `unit`, you can achieve any of the following results:
 
 ```text
 last year
@@ -170,76 +271,25 @@ in 1 sec.
 1 sec. ago
 2 sec. ago
 ```
+### Intl.RelativeTimeFormat.prototype.formatToParts(value, unit)
 
-### TODO
+The *Intl.RelativeTimeFormat.prototype.formatToParts* method is a version of the `format` method which it returns an Array of Objects which represent "parts" of the object. These objects have two properties: `type` is the unit name or the string `"literal"`, and `value`, which is the String which is the component of the output.
 
-Add support for relative week day:
+#### Example
 
-```text
-last Sunday
-this Sunday
-next Sunday
-last Sun.
-this Sun.
-next Sun.
-last Su
-this Su
-next Su
-last Monday
-this Monday
-next Monday
-last Mon.
-this Mon.
-next Mon.
-last M
-this M
-next M
-last Tuesday
-this Tuesday
-next Tuesday
-last Tue.
-this Tue.
-next Tue.
-last Tu
-this Tu
-next Tu
-last Wednesday
-this Wednesday
-next Wednesday
-last Wed.
-this Wed.
-next Wed.
-last W
-this W
-next W
-last Thursday
-this Thursday
-next Thursday
-last Thu.
-this Thu.
-next Thu.
-last Th
-this Th
-next Th
-last Friday
-this Friday
-next Friday
-last Fri.
-this Fri.
-next Fri.
-last F
-this F
-next F
-last Saturday
-this Saturday
-next Saturday
-last Sat.
-this Sat.
-next Sat.
-last Sa
-this Sa
-next Sa
+```js
+let rtf = new Intl.RelativeTimeFormat("en");
+
+// Format relative time using the day unit.
+rtf.formatToParts(-1, "day");
+// > [{ type: "literal", value: "yesterday"}]
+
+rtf.formatToParts(100, "day");
+// > [{ type: "literal", value: "in "}, { type: "day", value: "100"}, { type: "literal", value: " days"}]
 ```
+
+
+## Development
 
 ### Render Spec
 

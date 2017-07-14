@@ -3,8 +3,8 @@
   "version": "1.0.0-pre-draft",
   "description": "Intl.RelativeTime API Specification [Draft]",
   "scripts": {
-    "build": "ecmarkup spec/index.html index.html",
-    "watch": "ecmarkup --watch spec/index.html index.html"
+    "build": "ecmarkup spec/index.html index.html --css ecmarkup.css --js ecmarkup.js",
+    "watch": "ecmarkup --watch spec/index.html index.html --css ecmarkup.css --js ecmarkup.js"
   },
   "private": true,
   "repository": {
