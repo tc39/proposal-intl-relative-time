@@ -19,7 +19,7 @@ let rtf = new Intl.RelativeTimeFormat("en", {
 // Format relative time using the day unit.
 rtf.format(
   -1,
-  "day" // "year", "quarter", "month", "week", "day", "sun", "mon", "tue", "wed", "thu", "fri", "sat", "hour", "minute", or "second".
+  "day" // "year", "quarter", "month", "week", "day", "hour", "minute", or "second".
 );
 // > "yesterday"
 ```
@@ -145,7 +145,7 @@ Numeric value to use in the relative time internationalized message.
 
 #### unit
 
-Unit to use in the relative time internationalized message. Possible values are: *"year"*, *"quarter"*, *"month"*, *"week"*, *"day"*, *"sun"*, *"mon"*, *"tue"*, *"wed"*, *"thu"*, *"fri"*, *"sat"*, *"hour"*, *"minute"*, *"second"*.
+Unit to use in the relative time internationalized message. Possible values are: *"year"*, *"quarter"*, *"month"*, *"week"*, *"day"*, *"hour"*, *"minute"*, *"second"*.
 
 #### Example
 
@@ -260,69 +260,6 @@ in 1 sec.
 in 1 sec.
 1 sec. ago
 2 sec. ago
-last Sunday
-this Sunday
-next Sunday
-last Sun.
-this Sun.
-next Sun.
-last Su
-this Su
-next Su
-last Monday
-this Monday
-next Monday
-last Mon.
-this Mon.
-next Mon.
-last M
-this M
-next M
-last Tuesday
-this Tuesday
-next Tuesday
-last Tue.
-this Tue.
-next Tue.
-last Tu
-this Tu
-next Tu
-last Wednesday
-this Wednesday
-next Wednesday
-last Wed.
-this Wed.
-next Wed.
-last W
-this W
-next W
-last Thursday
-this Thursday
-next Thursday
-last Thu.
-this Thu.
-next Thu.
-last Th
-this Th
-next Th
-last Friday
-this Friday
-next Friday
-last Fri.
-this Fri.
-next Fri.
-last F
-this F
-next F
-last Saturday
-this Saturday
-next Saturday
-last Sat.
-this Sat.
-next Sat.
-last Sa
-this Sa
-next Sa
 ```
 
 ## Development
