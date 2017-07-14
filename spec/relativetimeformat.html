@@ -92,7 +92,7 @@
       <h1>MakePartsList ( parts, unit, value )</h1>
 
       <p>
-        The MakePartsList abstract operation is called with arguments _parts_, a pattern String, _type_, a String, and _value_ a String.
+        The MakePartsList abstract operation is called with arguments _parts_, a pattern String, _unit_, a String, and _value_ a String.
         <emu-note>
         Example:
         <pre>
@@ -119,7 +119,7 @@
             1. Add new part record { [[Type]]: `"literal"`, [[Value]]: _literal_ } as a new element of the list _result_.
           1. Let _p_ be the substring of _pattern_ from position _beginIndex_, exclusive, to position _endIndex_, exclusive.
           1. Assert: _p_ is `"0"`.
-          1. Add new part Record { [[Type]]: _type_, [[Value]]: _value_ } as a new element on the List _result_.
+          1. Add new part Record { [[Type]]: _unit_, [[Value]]: _value_ } as a new element on the List _result_.
         1. If _nextIndex_ is less than _length_, then:
           1. Let _literal_ be the substring of _pattern_ from position _nextIndex_, exclusive, to position _length_, exclusive.
           1. Add new part record { [[Type]]: `"literal"`, [[Value]]: _literal_ } as a new element of the list _result_.
