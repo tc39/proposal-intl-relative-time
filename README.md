@@ -79,7 +79,7 @@ It is also based on the LDML spec, C.11 Language Plural Rules:
   ```ruby
   include ActionView::Helpers::DateHelper
   def index
-    @sexy_date = time_ago_in_words(Date.today - 1)
+    @friendly_date = time_ago_in_words(Date.today - 1)
   end
   ```
 
