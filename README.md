@@ -26,7 +26,7 @@ rtf.format(
 
 ### Implementation Status
 
-__Stage 2__
+__Stage 3__
 
 Implementation Progress
 
