@@ -69,19 +69,19 @@ It is also based on the LDML spec, C.11 Language Plural Rules:
 
 #### Prior Art
 
-- Java
+##### Java
 
-  - [ICU](http://icu-project.org/apiref/icu4j/com/ibm/icu/text/RelativeDateTimeFormatter.html): `com.ibm.icu.impl.RelativeDateFormat`
-  - `org.ocpsoft.prettytime.PrettyTime`
+- [ICU](http://icu-project.org/apiref/icu4j/com/ibm/icu/text/RelativeDateTimeFormatter.html): `com.ibm.icu.impl.RelativeDateFormat`
+- `org.ocpsoft.prettytime.PrettyTime`
 
-- Ruby
+##### Ruby
 
-  ```ruby
-  include ActionView::Helpers::DateHelper
-  def index
-    @friendly_date = time_ago_in_words(Date.today - 1)
-  end
-  ```
+```ruby
+include ActionView::Helpers::DateHelper
+def index
+  @friendly_date = time_ago_in_words(Date.today - 1)
+end
+```
 
 #### Naming
 
