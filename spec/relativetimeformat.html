@@ -9,15 +9,16 @@
       <h1>InitializeRelativeTimeFormat (relativeTimeFormat, locales, options)</h1>
 
       <p>
-        The abstract operation InitializeRelativeTimeFormat accepts the arguments _relativeTimeFormat_ (which must be an object), _locales_, and _options_. It initializes _relativeTimeFormat_ as a RelativeTimeFormat object. It performas the following steps:
+        The abstract operation InitializeRelativeTimeFormat accepts the arguments _relativeTimeFormat_ (which must be an object), _locales_, and _options_. It initializes _relativeTimeFormat_ as a RelativeTimeFormat object.
       </p>
+      <p>The following steps are taken:</p>
 
       <emu-alg>
         1. If _relativeTimeFormat_ has an [[InitializedIntlObject]] internal slot with value *true*, throw a *TypeError* exception.
         1. Set _relativeTimeFormat_.[[InitializedIntlObject]] to *true*.
         1. Let _requestedLocales_ be ? CanonicalizeLocaleList(_locales_).
         1. If _options_ is *undefined*, then
-          1. Let _options_ be ObjectCreate(*%ObjectPrototype%*).
+          1. Let _options_ be ObjectCreate(*null*).
         1. Else
           1. Let _options_ be ? ToObject(_options_).
         1. Let _opt_ be a new Record.
@@ -63,9 +64,9 @@
         1. Let _fields_ be _relativeTimeFormat_.[[Fields]].
         1. Let _style_ be _relativeTimeFormat_.[[Style]].
         1. If _style_ is equal to "short", then
-          1. Let _entry_ be _unit_ + "-short".
+          1. Let _entry_ be the string-concatenation of _unit_ and "-short".
         1. Else if _style_ is equal to "narrow", then
-          1. Let _entry_ be _unit_ + "-narrow".
+          1. Let _entry_ be the string-concatenation of _unit_ and "-narrow".
         1. Else
           1. Let _entry_ be _unit_.
         1. Let _exists_ be ? HasProperty(_fields_, _entry_).
@@ -226,7 +227,7 @@
       <h1>Internal slots</h1>
 
       <p>
-        The value of the [[AvailableLocales]] internal slot is implementation defined within the constraints described in <emu-xref href="#sec-internal-slots"></emu-xref>.
+        The value of the [[AvailableLocales]] internal slot is implementation-defined within the constraints described in <emu-xref href="#sec-internal-slots"></emu-xref>.
       </p>
 
       <p>
