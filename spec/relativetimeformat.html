@@ -48,6 +48,23 @@
       </emu-alg>
     </emu-clause>
 
+    <emu-clause id="sec-singularrelativetimeunit" aoid=SingularRelativeTimeUnit>
+      <h1>SingularRelativeTimeUnit (unit)</h1>
+      <emu-alg>
+        1. Assert: Type(_unit_) is String.
+        1. If _unit_ is `"seconds"`, return `"second"`.
+        1. If _unit_ is `"minutes"`, return `"minute"`.
+        1. If _unit_ is `"hours"`, return `"hour"`.
+        1. If _unit_ is `"days"`, return `"day"`.
+        1. If _unit_ is `"weeks"`, return `"week"`.
+        1. If _unit_ is `"months"`, return `"month"`.
+        1. If _unit_ is `"quarters"`, return `"quarter"`.
+        1. If _unit_ is `"years"`, return `"year"`.
+        1. If _unit_ is not one of `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, `"quarter"`, `"year"`, throw a RangeError exception.
+        1. Return _unit_.
+      </emu-alg>
+    </emu-clause>
+
     <emu-clause id="sec-PartitionRelativeTimePattern" aoid="PartitionRelativeTimePattern">
       <h1>PartitionRelativeTimePattern (relativeTimeFormat, value, unit)</h1>
 
@@ -60,7 +77,7 @@
         1. Assert: Type(_value_) is a Number.
         1. Assert: Type(_unit_) is a String.
         1. If isFinite(_value_) is *false*, then throw a *RangeError* exception.
-        1. If _unit_ is not one of `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, `"quarter"`, `"year"`, throw a RangeError exception.
+        1. Let _unit_ be ? SingularRelativeTimeUnit(_unit_).
         1. Let _fields_ be _relativeTimeFormat_.[[Fields]].
         1. Let _style_ be _relativeTimeFormat_.[[Style]].
         1. If _style_ is equal to "short", then
