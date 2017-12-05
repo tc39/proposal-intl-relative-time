@@ -30,6 +30,8 @@
         1. Let _dataLocale_ be _r_.[[DataLocale]].
         1. Let _s_ be ? GetOption(_options_, `"style"`, `"string"`, «`"long"`, `"short"`, `"narrow"`», `"long"`).
         1. Set _relativeTimeFormat_.[[Style]] to _s_.
+        1. Let _t_ be ? GetOption(_options_, `"type"`, `"string"`, «`"numeric"`, `"text"`», `"numeric"`).
+        1. Set _relativeTimeFormat_.[[Type]] to _t_.
         1. Let _dataLocaleData_ be Get(_localeData_, _dataLocale_).
         1. Let _fields_ be Get(_dataLocaleData_, *"fields"*).
         1. Assert: _fields_ is an object (see <emu-xref href="#sec-Intl.RelativeTimeFormat-internal-slots"></emu-xref>).
@@ -90,10 +92,12 @@
         1. If _exists_ is *false*, then
           1. Let _entry_ be _unit_.
         1. Let _patterns_ be ? Get(_fields_, _entry_).
-        1. Let _exists_ be ? HasProperty(_patterns_, ToString(_value_)).
-        1. If _exists_ is *true*, then
-          1. Let _result_ be Get(_patterns_, ToString(_value_)).
-          1. Return a List containing the Record { [[Type]]: `"literal"`, [[Value]]: _result_ }.
+        1. Let _type be _relativeTimeFormat_.[[Type]].
+        1. If _type_ is equal to `"text"`, then
+          1. Let _exists_ be ? HasProperty(_patterns_, ToString(_value_)).
+          1. If _exists_ is *true*, then
+            1. Let _result_ be Get(_patterns_, ToString(_value_)).
+            1. Return a List containing the Record { [[Type]]: `"literal"`, [[Value]]: _result_ }.
         1. If _value_ is less than 0, then
           1. Let _tl_ be `"past"`.
         1. Else
@@ -364,6 +368,7 @@
     <ul>
       <li>[[Locale]] is a String value with the language tag of the locale whose localization is used for formatting.</li>
       <li>[[Style]] is one of the String values `"long"`, `"short"`, or `"narrow"`, identifying the relative time format style used.</li>
+      <li>[[Type]] is one of the String values `"numeric"`, or `"text"`, identifying the relative time format type used.</li>
     </ul>
   </emu-clause>
 </emu-clause>
