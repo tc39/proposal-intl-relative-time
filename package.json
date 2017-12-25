@@ -12,6 +12,7 @@
     "url": "https://github.com/tc39/intl-relative-time-spec.git"
   },
   "devDependencies": {
-    "ecmarkup": "latest"
+    "ecmarkup": "latest",
+    "@alrra/travis-scripts": "^3.0.0"
   }
 }
