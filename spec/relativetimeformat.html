@@ -26,7 +26,8 @@
         1. Set _opt_.[[LocaleMatcher]] to _matcher_.
         1. Let _localeData_ be *%RelativeTimeFormat%*.[[LocaleData]].
         1. Let _r_ be ResolveLocale(*%RelativeTimeFormat%*.[[AvailableLocales]], _requestedLocales_, _opt_, *%RelativeTimeFormat%*.[[RelevantExtensionKeys]], _localeData_).
-        1. Set _relativeTimeFormat_.[[Locale]] to the value of _r_.[[Locale]].
+        1. Let _locale_ be _r_.[[Locale]].
+        1. Set _relativeTimeFormat_.[[Locale]] to _locale_.
         1. Let _dataLocale_ be _r_.[[DataLocale]].
         1. Let _s_ be ? GetOption(_options_, `"style"`, `"string"`, «`"long"`, `"short"`, `"narrow"`», `"long"`).
         1. Set _relativeTimeFormat_.[[Style]] to _s_.
