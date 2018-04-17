@@ -33,8 +33,7 @@
         1. Set _relativeTimeFormat_.[[Style]] to _s_.
         1. Let _numeric_ be ? GetOption(_options_, `"numeric"`, `"string"`, «`"always"`, `"auto"`», `"always"`).
         1. Set _relativeTimeFormat_.[[Numeric]] to _numeric_.
-        1. Let _dataLocaleData_ be Get(_localeData_, _dataLocale_).
-        1. Let _fields_ be Get(_dataLocaleData_, *"fields"*).
+        1. Let _fields_ be Get(_localeData_, _dataLocale_).
         1. Assert: _fields_ is an object (see <emu-xref href="#sec-Intl.RelativeTimeFormat-internal-slots"></emu-xref>).
         1. Set _relativeTimeFormat_.[[Fields]] to _fields_.
         1. Let _nfLocale_ be CreateArrayFromList(« _locale_ »).
