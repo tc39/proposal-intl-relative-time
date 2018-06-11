@@ -6,7 +6,7 @@
 
 
     <emu-clause id="sec-InitializeRelativeTimeFormat" aoid="InitializeRelativeTimeFormat">
-      <h1>InitializeRelativeTimeFormat (relativeTimeFormat, locales, options)</h1>
+      <h1>InitializeRelativeTimeFormat ( _relativeTimeFormat_, _locales_, _options_ )</h1>
 
       <p>
         The abstract operation InitializeRelativeTimeFormat accepts the arguments _relativeTimeFormat_ (which must be an object), _locales_, and _options_. It initializes _relativeTimeFormat_ as a RelativeTimeFormat object.
@@ -51,7 +51,7 @@
     </emu-clause>
 
     <emu-clause id="sec-singularrelativetimeunit" aoid=SingularRelativeTimeUnit>
-      <h1>SingularRelativeTimeUnit (unit)</h1>
+      <h1>SingularRelativeTimeUnit ( _unit_ )</h1>
       <emu-alg>
         1. Assert: Type(_unit_) is String.
         1. If _unit_ is `"seconds"`, return `"second"`.
@@ -68,7 +68,7 @@
     </emu-clause>
 
     <emu-clause id="sec-PartitionRelativeTimePattern" aoid="PartitionRelativeTimePattern">
-      <h1>PartitionRelativeTimePattern (relativeTimeFormat, value, unit)</h1>
+      <h1>PartitionRelativeTimePattern ( _relativeTimeFormat_, _value_, _unit_ )</h1>
 
       <p>
         When the FormatRelativeTime abstract operation is called with arguments _relativeTimeFormat_, _value_, and _unit_ it returns a String value representing _value_ (interpreted as a time value as specified in ES2016, 20.3.1.1) according to the effective locale and the formatting options of _relativeTimeFormat_.
@@ -103,7 +103,7 @@
         1. Else
           1. Let _tl_ be `"future"`.
         1. Let _po_ be ? Get(_patterns_, _tl_).
-        1. Let _fv_ be ! FormatNumber(_relativeTimeFormat_.[[NumberFormat]], _value_).
+        1. Let _fv_ be ! PartitionNumberPattern(_relativeTimeFormat_.[[NumberFormat]], _value_).
         1. Let _pr_ be ! ResolvePlural(_relativeTimeFormat_.[[PluralRules]], _value_).
         1. Let _pattern_ be ? Get(_po_, _pr_).
         1. Return ? MakePartsList(_pattern_, _unit_, _fv_).
@@ -111,27 +111,27 @@
     </emu-clause>
 
     <emu-clause id="sec-makepartslist" aoid="makepartslist">
-      <h1>MakePartsList ( parts, unit, value )</h1>
+      <h1>MakePartsList ( _pattern_, _unit_, _parts_ )</h1>
 
       <p>
-        The MakePartsList abstract operation is called with arguments _parts_, a pattern String, _unit_, a String, and _value_ a String.
+        The MakePartsList abstract operation is called with arguments _pattern_, a pattern String, _unit_, a String, and _parts_, a List of Records representing a formatted Number.
         <emu-note>
         Example:
         <pre>
-          MakePartsList("AA{0}BB", "hour", "15")  --&lt;
+          MakePartsList("AA{0}BB", "hour", &laquo; { [[Type]]: "integer", [[Value]]: "15" } &raquo; )  --&lt;
 
         Output (List of Records):
-          [
-            {type: 'literal', value: 'AA'},
-            {type: 'hour', value: '15'},
-            {type: 'literal', value: 'BB'},
-          ]
+          &laquo;
+            { [[Type]]: "literal", [[Value]]: "AA"},
+            { [[Type]]: "integer", [[Value]]: "15", [[Unit]]: "hour"},
+            { [[Type]]: "literal", [[Value]]: "BB"}
+          &raquo;
         </pre>
       </p>
       <emu-alg>
         1. Let _result_ be a new empty List.
         1. Let _beginIndex_ be Call(%StringProto_indexOf%, _pattern_, "{", *0*).
-        1. Let _length_ be ! Get(_parts_, `"length"`).
+        1. Let _length_ be ! Get(_pattern_, `"length"`).
         1. Assert: _length_ is a non-negative integer.
         1. Repeat while _beginIndex_ is an integer index into _pattern_:
           1. Set _endIndex_ to Call(%StringProto_indexOf%, _pattern_, "}", _beginIndex_)
@@ -141,7 +141,8 @@
             1. Add new part record { [[Type]]: `"literal"`, [[Value]]: _literal_ } as a new element of the list _result_.
           1. Let _p_ be the substring of _pattern_ from position _beginIndex_, exclusive, to position _endIndex_, exclusive.
           1. Assert: _p_ is `"0"`.
-          1. Add new part Record { [[Type]]: _unit_, [[Value]]: _value_ } as a new element on the List _result_.
+          1. For each _part_ in _parts_:
+            1. Add new part Record { [[Type]]: _part_.[[Type]], [[Value]]: _part_.[[Value]], [[Unit]]: _unit_ } as a new element on the List _result_.
         1. If _nextIndex_ is less than _length_, then:
           1. Let _literal_ be the substring of _pattern_ from position _nextIndex_, exclusive, to position _length_, exclusive.
           1. Add new part record { [[Type]]: `"literal"`, [[Value]]: _literal_ } as a new element of the list _result_.
@@ -150,7 +151,7 @@
     </emu-clause>
 
     <emu-clause id="sec-FormatRelativeTime" aoid="FormatRelativeTime">
-      <h1>FormatRelativeTime (relativeTimeFormat, value, unit)</h1>
+      <h1>FormatRelativeTime ( _relativeTimeFormat_, _value_, _unit_ )</h1>
 
       <p>
         The FormatRelativeTime abstract operation is called with arguments _relativeTimeFormat_ (which must be an object initialized as a RelativeTimeFormat), _value_ (which must be a Number value), and _unit_ (which must be a String denoting the value unit) and performs the following steps:
@@ -166,7 +167,7 @@
     </emu-clause>
 
     <emu-clause id="sec-FormatRelativeTimeToParts" aoid="FormatRelativeTimeToParts">
-      <h1>FormatRelativeTimeToParts (relativeTimeFormat, value, unit)</h1>
+      <h1>FormatRelativeTimeToParts ( _relativeTimeFormat_, _value_, _unit_ )</h1>
         The FormatRelativeTimeToParts abstract operation is called with arguments _relativeTimeFormat_ (which must be an object initialized as a RelativeTimeFormat), _value_ (which must be a Number value), and _unit_ (which must be a String denoting the value unit) and performs the following steps:
       <p>
       </p>
@@ -179,6 +180,8 @@
           1. Let _O_ be ObjectCreate(%ObjectPrototype%).
           1. Perform ! CreateDataPropertyOrThrow(_O_, `"type"`, _part_.[[Type]]).
           1. Perform ! CreateDataPropertyOrThrow(_O_, `"value"`, _part_.[[Value]]).
+          1. If _part_ has a [[Unit]] field,
+            1. Perform ! CreateDataPropertyOrThrow(_O_, `"unit"`, _part_.[[Unit]]).
           1. Perform ! CreateDataPropertyOrThrow(_result_, ! ToString(_n_), _O_).
           1. Increment _n_ by 1.
         1. Return _result_.
@@ -194,7 +197,7 @@
     </p>
 
     <emu-clause id="sec-Intl.RelativeTimeFormat">
-      <h1>Intl.RelativeTimeFormat ([ locales [ , options ]])</h1>
+      <h1>Intl.RelativeTimeFormat ([ _locales_ [ , _options_ ]])</h1>
 
       <p>
         When the *Intl.RelativeTimeFormat* function is called with optional arguments the following steps are taken:
@@ -227,7 +230,7 @@
     </emu-clause>
 
     <emu-clause id="sec-Intl.RelativeTimeFormat.supportedLocalesOf">
-      <h1>Intl.RelativeTimeFormat.supportedLocalesOf (locales [, options ])</h1>
+      <h1>Intl.RelativeTimeFormat.supportedLocalesOf ( _locales_ [, _options_ ])</h1>
 
       <p>
         When the *supportedLocalesOf* method of *%RelativeTimeFormat%* is called, the following steps are taken:
@@ -304,7 +307,7 @@
     </emu-clause>
 
     <emu-clause id="sec-Intl.RelativeTimeFormat.prototype.format">
-      <h1>Intl.RelativeTimeFormat.prototype.format( value, unit )</h1>
+      <h1>Intl.RelativeTimeFormat.prototype.format( _value_, _unit_ )</h1>
 
       <p>
         When the *Intl.RelativeTimeFormat.prototype.format* is called with an optional argument _value_, the following steps are taken:
@@ -320,7 +323,7 @@
     </emu-clause>
 
     <emu-clause id="sec-Intl.RelativeTimeFormat.prototype.formatToParts">
-      <h1>Intl.RelativeTimeFormat.prototype.formatToParts( value, unit )</h1>
+      <h1>Intl.RelativeTimeFormat.prototype.formatToParts( _value_, _unit_ )</h1>
 
       <p>
         When the *Intl.RelativeTimeFormat.prototype.formatToParts* is called with an optional argument _value_, the following steps are taken:

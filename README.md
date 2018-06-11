@@ -274,7 +274,7 @@ in 1 sec.
 
 ### `Intl.RelativeTimeFormat.prototype.formatToParts(value, unit)`
 
-The `Intl.RelativeTimeFormat.prototype.formatToParts` method is a version of the `format` method which it returns an array of objects which represent "parts" of the object. These objects have two properties: `type` is the unit name or the string `"literal"`, and `value`, which is the String which is the component of the output.
+The `Intl.RelativeTimeFormat.prototype.formatToParts` method is a version of the `format` method which it returns an array of objects which represent "parts" of the object, separating the formatted number into its consituent parts and separating it from other surrounding text. These objects have two properties: `type` a NumberFormat formatToParts type, and `value`, which is the String which is the component of the output. If a "part" came from NumberFormat, it will have a `unit` property which indicates the unit being formatted; literals which are part of the larger frame will not have this property.
 
 #### Example
 
@@ -286,7 +286,7 @@ rtf.formatToParts(-1, "day");
 // > [{ type: "literal", value: "yesterday"}]
 
 rtf.formatToParts(100, "day");
-// > [{ type: "literal", value: "in "}, { type: "day", value: "100"}, { type: "literal", value: " days"}]
+// > [{ type: "literal", value: "in " }, { type: "integer", value: "100", unit: "day" }, { type: "literal", value: " days" }]
 ```
 
 
