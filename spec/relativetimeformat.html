@@ -267,11 +267,12 @@
       </p>
 
       <ul>
-        <li>[[LocaleData]][Locale] has ordinary data properties `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, `"quarter"` and `"year"`. Additional property keys may exist with the previous names concatenated with the strings `"-narrow"` or `"-short"`. The values corresponding to these property keys are objects which contain these two categories of properties:</li>
-        <li><ul>
+        <li>[[LocaleData]][Locale] has ordinary data properties `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, `"quarter"` and `"year"`. Additional property keys may exist with the previous names concatenated with the strings `"-narrow"` or `"-short"`. The values corresponding to these property keys are objects which contain these two categories of properties:
+        <ul>
         <li>`"future"` and `"past"` properties, which are objects with a property for each of the [[PluralCategories]] in the Locale. The value corresponding to those properties is a pattern which may contain `"{0}"` to be replaced by a formatted number.</li>
         <li>Optionally, additional properties whose key is the result of ToString of a Number, and whose values are literal Strings which are not treated as templates.</li>
-        </li></ul>
+        </ul>
+        </li>
       </ul>
 
       <emu-note>
