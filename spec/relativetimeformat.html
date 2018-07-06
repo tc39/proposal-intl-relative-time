@@ -14,8 +14,6 @@
       <p>The following steps are taken:</p>
 
       <emu-alg>
-        1. If _relativeTimeFormat_ has an [[InitializedIntlObject]] internal slot with value *true*, throw a *TypeError* exception.
-        1. Set _relativeTimeFormat_.[[InitializedIntlObject]] to *true*.
         1. Let _requestedLocales_ be ? CanonicalizeLocaleList(_locales_).
         1. If _options_ is *undefined*, then
           1. Let _options_ be ObjectCreate(*null*).
@@ -45,7 +43,6 @@
         1. Let _prOptions_ be ObjectCreate(%ObjectPrototype%).
         1. Perform ! CreateDataPropertyOrThrow(_prOptions_, `"style"`, `"cardinal"`).
         1. Let _relativeTimeFormat_.[[PluralRules]] be ? Construct(%PluralRules%, « _prLocale_, _prOptions_ »).
-        1. Set _relativeTimeFormat_.[[InitializedRelativeTimeFormat]] to *true*.
         1. Return _relativeTimeFormat_.
       </emu-alg>
     </emu-clause>
@@ -206,7 +203,7 @@
 
       <emu-alg>
         1. If NewTarget is *undefined*, throw a *TypeError* exception.
-        1. Let _relativeTimeFormat_ be ! OrdinaryCreateFromConstructor(NewTarget, `"%RelativeTimeFormatPrototype%"`).
+        1. Let _relativeTimeFormat_ be ! OrdinaryCreateFromConstructor(NewTarget, `"%RelativeTimeFormatPrototype%"`, « [[InitializedRelativeTimeFormat]] »).
         1. Return ? InitializeRelativeTimeFormat(_relativeTimeFormat_, _locales_, _options_).
       </emu-alg>
     </emu-clause>
@@ -317,7 +314,7 @@
 
       <emu-alg>
         1. Let _relativeTimeFormat_ be the *this* value.
-        1. If Type(_relativeTimeFormat_) is not Object or _relativeTimeFormat_ does not have an [[InitializedRelativeTimeFormat]] internal slot whose value is *true*, throw a TypeError exception.
+        1. If Type(_relativeTimeFormat_) is not Object or _relativeTimeFormat_ does not have an [[InitializedRelativeTimeFormat]] internal slot, throw a TypeError exception.
         1. Let _value_ be ? ToNumber(_value_).
         1. Let _unit_ be ? ToString(_unit_).
         1. Return ? FormatRelativeTime(_relativeTimeFormat_, _value_, _unit_).
@@ -333,7 +330,7 @@
 
       <emu-alg>
         1. Let _relativeTimeFormat_ be the *this* value.
-        1. If Type(_relativeTimeFormat_) is not Object or _relativeTimeFormat_ does not have an [[InitializedRelativeTimeFormat]] internal slot whose value is *true*, throw a TypeError exception.
+        1. If Type(_relativeTimeFormat_) is not Object or _relativeTimeFormat_ does not have an [[InitializedRelativeTimeFormat]] internal slot, throw a TypeError exception.
         1. Let _value_ be ? ToNumber(_value_).
         1. Let _unit_ be ? ToString(_unit_).
         1. Return ? FormatRelativeTimeToParts(_relativeTimeFormat_, _value_, _unit_).
@@ -390,15 +387,15 @@
     <h1>Properties of Intl.RelativeTimeFormat Instances</h1>
 
     <p>
-      Intl.RelativeTimeFormat instances inherit properties from *%RelativeTimeFormatPrototype%*.
+      Intl.RelativeTimeFormat instances are ordinary objects that inherit properties from *%RelativeTimeFormatPrototype%*.
     </p>
 
     <p>
-      Intl.RelativeTimeFormat instances and other objects that have been successfully initialized as a RelativeTimeFormat have [[InitializedIntlObject]] and [[InitializedRelativeTimeFormat]] internal slots whose values are *true*.
+      Intl.RelativeTimeFormat instances have an [[InitializedRelativeTimeFormat]] internal slot.
     </p>
 
     <p>
-      Objects that have been successfully initialized as a RelativeTimeFormat object also have several internal slots that are computed by the constructor:
+      Intl.RelativeTimeFormat instances also have several internal slots that are computed by the constructor:
     </p>
 
     <ul>
