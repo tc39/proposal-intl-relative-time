@@ -35,10 +35,7 @@
         1. Assert: _fields_ is an object (see <emu-xref href="#sec-Intl.RelativeTimeFormat-internal-slots"></emu-xref>).
         1. Set _relativeTimeFormat_.[[Fields]] to _fields_.
         1. Let _nfLocale_ be CreateArrayFromList(« _locale_ »).
-        1. Let _nfOptions_ be ObjectCreate(*null*).
-        1. Perform ! CreateDataPropertyOrThrow(_nfOptions_, `"useGrouping"`, *false*).
-        1. Perform ! CreateDataPropertyOrThrow(_nfOptions_, `"minimumIntegerDigits"`, *2*).
-        1. Let _relativeTimeFormat_.[[NumberFormat]] be ? Construct(%NumberFormat%, « _nfLocale_, _nfOptions_ »).
+        1. Let _relativeTimeFormat_.[[NumberFormat]] be ? Construct(%NumberFormat%, « _nfLocale_ »).
         1. Let _prLocale_ be CreateArrayFromList(« _locale_ »).
         1. Let _prOptions_ be ObjectCreate(*null*).
         1. Perform ! CreateDataPropertyOrThrow(_prOptions_, `"style"`, `"cardinal"`).
