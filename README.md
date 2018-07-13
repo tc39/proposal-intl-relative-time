@@ -118,6 +118,12 @@ The fundamental difference between `RelativeTimeFormat` and `UnitFormat` is that
 
 A countdown for example is a mix of `UnitFormat` and `ListFormat`, and is not a `RelativeTimeFormat`.
 
+#### NumberFormat options (e.g., useGrouping, maximumFractionDigits)
+
+RelativeTimeFormat messages may include number parts (e.g., the `1,000` in `1,000 days ago`), which are formatted using the NumberFormat default options.
+
+In this design, we didn't find any use case that could justify allowing to change/override these NumberFormat default options. Therefore, RelativeTimeFormat doesn't include any NumberFormat option.
+
 ### API
 
 #### `Intl.RelativeTimeFormat([locales[, options]])`
