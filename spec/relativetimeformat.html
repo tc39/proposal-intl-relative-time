@@ -69,7 +69,7 @@
         1. Assert: _relativeTimeFormat_.[[InitializedRelativeTimeFormat]] is *true*.
         1. Assert: Type(_value_) is a Number.
         1. Assert: Type(_unit_) is a String.
-        1. If isFinite(_value_) is *false*, then throw a *RangeError* exception.
+        1. If _value_ is *NaN*, *+&infin;*, or *-&infin;*, then throw a *RangeError* exception.
         1. Let _unit_ be ? SingularRelativeTimeUnit(_unit_).
         1. Let _fields_ be _relativeTimeFormat_.[[Fields]].
         1. Let _style_ be _relativeTimeFormat_.[[Style]].
