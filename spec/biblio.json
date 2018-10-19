@@ -1,0 +1,24 @@
+{
+  "https://tc39.github.io/ecma402/": [
+    {
+      "type": "op",
+      "aoid": "GetOption",
+      "id": "sec-getoption"
+    },
+    {
+      "type": "op",
+      "aoid": "ResolveLocale",
+      "id": "sec-resolvelocale"
+    },
+    {
+      "type": "op",
+      "aoid": "CanonicalizeLocaleList",
+      "id": "sec-canonicalizelocalelist"
+    },
+    {
+      "type": "op",
+      "aoid": "SupportedLocales",
+      "id": "sec-supportedlocales"
+    }
+  ]
+}

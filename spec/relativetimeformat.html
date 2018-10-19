@@ -36,7 +36,6 @@
         1. Set _relativeTimeFormat_.[[Fields]] to _fields_.
         1. Let _relativeTimeFormat_.[[NumberFormat]] be ? Construct(%NumberFormat%, « _locale_ »).
         1. Let _relativeTimeFormat_.[[PluralRules]] be ? Construct(%PluralRules%, « _locale_ »).
-        1. Set _relativeTimeFormat_.[[InitializedRelativeTimeFormat]] to *true*.
         1. Return _relativeTimeFormat_.
       </emu-alg>
     </emu-clause>
@@ -66,7 +65,7 @@
       </p>
 
       <emu-alg>
-        1. Assert: _relativeTimeFormat_.[[InitializedRelativeTimeFormat]] is *true*.
+        1. Assert: _relativeTimeFormat_ has an [[InitializedRelativeTimeFormat]] internal slot.
         1. Assert: Type(_value_) is a Number.
         1. Assert: Type(_unit_) is a String.
         1. If _value_ is *NaN*, *+&infin;*, or *-&infin;*, then throw a *RangeError* exception.
@@ -197,7 +196,7 @@
 
       <emu-alg>
         1. If NewTarget is *undefined*, throw a *TypeError* exception.
-        1. Let _relativeTimeFormat_ be ! OrdinaryCreateFromConstructor(NewTarget, `"%RelativeTimeFormatPrototype%"`, « [[InitializedRelativeTimeFormat]] »).
+        1. Let _relativeTimeFormat_ be ! OrdinaryCreateFromConstructor(NewTarget, `"%RelativeTimeFormatPrototype%"`, « [[InitializedRelativeTimeFormat]], [[Locale]], [[Style]], [[Numeric]], [[Fields]], [[NumberFormat]], [[PluralRules]] »).
         1. Return ? InitializeRelativeTimeFormat(_relativeTimeFormat_, _locales_, _options_).
       </emu-alg>
     </emu-clause>
@@ -233,10 +232,6 @@
         1. Let _requestedLocales_ be CanonicalizeLocaleList(_locales_).
         1. Return SupportedLocales(_availableLocales_, _requestedLocales_, _options_).
       </emu-alg>
-
-      <p>
-        The value of the *length* property of the *supportedLocalesOf* method is 1.
-      </p>
     </emu-clause>
 
     <emu-clause id="sec-Intl.RelativeTimeFormat-internal-slots">
@@ -247,7 +242,7 @@
       </p>
 
       <p>
-        The value of the [[RelevantExtensionKeys]] internal slot is [].
+        The value of the [[RelevantExtensionKeys]] internal slot is « ».
       </p>
 
       <emu-note>
@@ -277,7 +272,7 @@
     <h1>Properties of the Intl.RelativeTimeFormat Prototype Object</h1>
 
     <p>
-      The Intl.RelativeTimeFormat prototype object is itself an ordinary object. %RelativeTimeFormatPrototype% is not an Intl.RelativeTimeFormat instance and does not have an [[InitializedRelatimveTimeFormat]] internal slot or any of the other internal slots of Intl.RelativeTimeFormat instance objects.
+      The Intl.RelativeTimeFormat prototype object is itself an ordinary object. %RelativeTimeFormatPrototype% is not an Intl.RelativeTimeFormat instance and does not have an [[InitializedRelativeTimeFormat]] internal slot or any of the other internal slots of Intl.RelativeTimeFormat instance objects.
     </p>
 
     <emu-clause id="sec-Intl.RelativeTimeFormat.prototype.constructor">
