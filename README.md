@@ -30,6 +30,7 @@ __Stage 3__
 
 Implementation Progress
 
+- [V8 v7.1.179](https://bugs.chromium.org/p/v8/issues/detail?id=7869), shipping in Chrome 71
 - Polyfill (in progress)
 
 Backpointers
