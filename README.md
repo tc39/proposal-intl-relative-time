@@ -8,20 +8,55 @@ Due to common use, relative time–formatted values exist in a majority of websi
 
 It is highly probable that the majority of current relative time formatting implementations require a large portion of CLDR raw or compiled data to format relative time values. Bringing this into the platform will improve performance of the web and developer productivity as they no longer have to bring extra weight to format relative time values.
 
-### Usage
+### Usage examples
+
+The following example shows how to create a relative time formatter using the English language.
 
 ```js
-// Create a relative time formatter in your locale.
-let rtf = new Intl.RelativeTimeFormat("en", {
-    style: "long", // "long" (default), "short", or "narrow"
+// Create a relative time formatter in your locale
+// with default values explicitly passed in.
+const rtf = new Intl.RelativeTimeFormat('en', {
+    localeMatcher: 'best fit', // other values: 'lookup'
+    numeric: 'always', // other values: 'auto'
+    style: 'long', // other values: 'short' or 'narrow'
 });
 
-// Format relative time using the day unit.
+// Format relative time using negative day unit (-1).
+rtf.format(
+  -1,
+  "day" // "year", "quarter", "month", "week", "day", "hour", "minute", or "second"
+);
+// > "1 day ago"
+
+// Format relative time using positive day unit (1).
+rtf.format(
+  1,
+  "day" // "year", "quarter", "month", "week", "day", "hour", "minute", or "second"
+);
+// > "in 1 day"
+
+```
+
+> Note: If `numeric:auto` option is passed, it will produce the string `yesterday` or `tomorrow` instead of `1 day ago` or `in 1 day`, this allows to not always have to use numeric values in the output.
+
+```js
+// Create a relative time formatter in your locale
+// with numeric: 'auto' option value passed in.
+const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+
+// Format relative time using negative day unit (-1).
 rtf.format(
   -1,
   "day" // "year", "quarter", "month", "week", "day", "hour", "minute", or "second"
 );
 // > "yesterday"
+
+// Format relative time using positive day unit (1).
+rtf.format(
+  1,
+  "day" // "year", "quarter", "month", "week", "day", "hour", "minute", or "second"
+);
+// > "tomorrow"
 ```
 
 ### Implementation Status
@@ -167,7 +202,7 @@ Unit to use in the relative time internationalized message. Possible values are:
 #### Example
 
 ```js
-let rtf = new Intl.RelativeTimeFormat("en");
+const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 
 // Format relative time using the day unit.
 rtf.format(-1, "day");
@@ -286,7 +321,7 @@ The `Intl.RelativeTimeFormat.prototype.formatToParts` method is a version of the
 #### Example
 
 ```js
-let rtf = new Intl.RelativeTimeFormat("en");
+const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 
 // Format relative time using the day unit.
 rtf.formatToParts(-1, "day");
@@ -295,7 +330,6 @@ rtf.formatToParts(-1, "day");
 rtf.formatToParts(100, "day");
 // > [{ type: "literal", value: "in " }, { type: "integer", value: "100", unit: "day" }, { type: "literal", value: " days" }]
 ```
-
 
 ## Development
 
