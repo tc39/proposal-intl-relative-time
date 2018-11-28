@@ -29,7 +29,7 @@ rtf.format(-1, "day");
 // > "1 day ago"
 
 // Format relative time using positive  value (1).
-rtf.format(1,"day");
+rtf.format(1, "day");
 // > "in 1 day"
 
 ```
@@ -41,11 +41,11 @@ rtf.format(1,"day");
 // with numeric: "auto" option value passed in.
 const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
-// Format relative time using negative day unit (-1).
+// Format relative time using negative value (-1).
 rtf.format(-1, "day");
 // > "yesterday"
 
-// Format relative time using positive day unit (1).
+// Format relative time using positive  value (1).
 rtf.format(1,"day");
 // > "tomorrow"
 ```
