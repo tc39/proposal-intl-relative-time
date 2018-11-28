@@ -12,7 +12,7 @@ It is highly probable that the majority of current relative time formatting impl
 
 The following example shows how to create a relative time formatter using the English language.
 
-> Units : "day", "year", "quarter", "month", "week", "day", "hour", "minute" and "second".
+> Units : "year", "quarter", "month", "week", "day", "hour", "minute" and "second".
 
 ```js
 // Create a relative time formatter in your locale
