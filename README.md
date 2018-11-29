@@ -165,7 +165,14 @@ Optional. A string with a BCP 47 language tag, or an array of such strings. For 
 
 Optional. An object with some or all of the following properties:
 
-##### `options.style`
+##### `localeMatcher`
+
+The locale matching algorithm to use. Possible values are `"lookup"` and `"best fit"`; the default is `"best fit"`. For information about this option, see the  [`Intl` page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_negotiation).
+
+##### `numeric`
+The format of output message. Possible values are  `"always"` (default, e.g., `1 day ago`), or `"auto"` (e.g., `yesterday`). `"auto"` allows to not always have to use numeric values in the output.
+
+##### `style`
 
 The length of the internationalized message. Possible values are: `"long"` (default, e.g., `in 1 month`); `"short"` (e.g., `in 1 mo.`), or `"narrow"` (e.g., `in 1 mo.`). The narrow style could be similar to the short style for some locales.
 
@@ -173,7 +180,11 @@ The length of the internationalized message. Possible values are: `"long"` (defa
 
 ```js
 // Create a relative time formatter in your locale.
-let rtf = new Intl.RelativeTimeFormat("en", {style: "short"});
+let rtf = new Intl.RelativeTimeFormat("en", {
+    localeMatcher: "best fit", // other values: "lookup"
+    numeric: "always", // other values: "auto"
+    style: "long", // other values: "short" or "narrow"
+});
 ```
 
 ### `Intl.RelativeTimeFormat.prototype.format(value, unit)`
