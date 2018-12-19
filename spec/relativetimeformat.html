@@ -241,11 +241,11 @@
       </p>
 
       <p>
-        The value of the [[RelevantExtensionKeys]] internal slot is « ».
+        The value of the [[RelevantExtensionKeys]] internal slot is « `"nu"` ».
       </p>
 
       <emu-note>
-        Unicode Technical Standard 35 describes no locale extension keys that are relevant to relative time formatting.
+        Unicode Technical Standard 35 describes one locale extension key that is relevant to relative time formatting, "nu" for numbering system.
       </emu-note>
 
       <p>
@@ -258,6 +258,9 @@
         <li>`"future"` and `"past"` properties, which are objects with a property for each of the [[PluralCategories]] in the Locale. The value corresponding to those properties is a pattern which may contain `"{0}"` to be replaced by a formatted number.</li>
         <li>Optionally, additional properties whose key is the result of ToString of a Number, and whose values are literal Strings which are not treated as templates.</li>
         </ul>
+        </li>
+        <li>
+          The list that is the value of the `"nu"` field of any locale field of [[LocaleData]] must not include the values `"native"`, `"traditio"`, or `"finance"`.
         </li>
       </ul>
 
