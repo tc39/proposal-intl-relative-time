@@ -26,6 +26,7 @@
         1. Let _r_ be ResolveLocale(%RelativeTimeFormat%.[[AvailableLocales]], _requestedLocales_, _opt_, %RelativeTimeFormat%.[[RelevantExtensionKeys]], _localeData_).
         1. Let _locale_ be _r_.[[Locale]].
         1. Set _relativeTimeFormat_.[[Locale]] to _locale_.
+        1. Set _relativeTimeFormat_.[[NumberingSystem]] to r_.[[nu]].
         1. Let _dataLocale_ be _r_.[[DataLocale]].
         1. Let _s_ be ? GetOption(_options_, `"style"`, `"string"`, «`"long"`, `"short"`, `"narrow"`», `"long"`).
         1. Set _relativeTimeFormat_.[[Style]] to _s_.
@@ -195,7 +196,7 @@
 
       <emu-alg>
         1. If NewTarget is *undefined*, throw a *TypeError* exception.
-        1. Let _relativeTimeFormat_ be ? OrdinaryCreateFromConstructor(NewTarget, `"%RelativeTimeFormatPrototype%"`, « [[InitializedRelativeTimeFormat]], [[Locale]], [[Style]], [[Numeric]], [[Fields]], [[NumberFormat]], [[PluralRules]] »).
+        1. Let _relativeTimeFormat_ be ? OrdinaryCreateFromConstructor(NewTarget, `"%RelativeTimeFormatPrototype%"`, « [[InitializedRelativeTimeFormat]], [[Locale]], [[Style]], [[Numeric]], [[Fields]], [[NumberFormat]], [[NumberingSystem]], [[PluralRules]] »).
         1. Return ? InitializeRelativeTimeFormat(_relativeTimeFormat_, _locales_, _options_).
       </emu-alg>
     </emu-clause>
@@ -245,7 +246,7 @@
       </p>
 
       <emu-note>
-        Unicode Technical Standard 35 describes one locale extension key that is relevant to relative time formatting, "nu" for numbering system.
+        Unicode Technical Standard 35 implicitly describes one locale extension key that is relevant to relative time formatting, "nu" for numbering system.
       </emu-note>
 
       <p>
@@ -371,6 +372,10 @@
             <td>[[Numeric]]</td>
             <td>`"numeric"`</td>
           </tr>
+          <tr>
+            <td>[[NumberingSystem]]</td>
+            <td>`"numberingSystem"`</td>
+          </tr>
         </table>
       </emu-table>
     </emu-clause>
@@ -395,6 +400,7 @@
       <li>[[Locale]] is a String value with the language tag of the locale whose localization is used for formatting.</li>
       <li>[[Style]] is one of the String values `"long"`, `"short"`, or `"narrow"`, identifying the relative time format style used.</li>
       <li>[[Numeric]] is one of the String values `"always"` or `"auto"`, identifying whether numerical descriptions are always used, or used only when no more specific version is available (e.g., "1 day ago" vs "yesterday").</li>
+      <li>[[NumberingSystem]] is a String value with the `"type"` given in Unicode Technical Standard 35 for the numbering system used for formatting.</li>
     </ul>
   </emu-clause>
 </emu-clause>
