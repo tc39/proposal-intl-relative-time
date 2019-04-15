@@ -316,6 +316,7 @@ in 1 sec.
 in 1 sec.
 1 sec. ago
 2 sec. ago
+now
 ```
 
 ### `Intl.RelativeTimeFormat.prototype.formatToParts(value, unit)`
