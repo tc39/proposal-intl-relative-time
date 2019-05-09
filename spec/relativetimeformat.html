@@ -21,11 +21,11 @@
           1. Let _options_ be ? ToObject(_options_).
         1. Let _opt_ be a new Record.
         1. Let _matcher_ be ? GetOption(_options_, `"localeMatcher"`, `"string"`, «`"lookup"`, `"best fit"`», `"best fit"`).
+        1. Set _opt_.[[LocaleMatcher]] to _matcher_.
         1. Let _numberingSystem_ be ? GetOption(_options_, `"numberingSystem"`, `"string"`, *undefined*, *undefined*).
         1. If _numberingSystem_ is not *undefined*, then
           1. If _numberingSystem_ does not match the `(3*8alphanum) *("-" (3*8alphanum))` sequence, throw a *RangeError* exception.
         1. Set _opt_.[[nu]] to _numberingSystem_.
-        1. Set _opt_.[[LocaleMatcher]] to _matcher_.
         1. Let _localeData_ be %RelativeTimeFormat%.[[LocaleData]].
         1. Let _r_ be ResolveLocale(%RelativeTimeFormat%.[[AvailableLocales]], _requestedLocales_, _opt_, %RelativeTimeFormat%.[[RelevantExtensionKeys]], _localeData_).
         1. Let _locale_ be _r_.[[Locale]].
