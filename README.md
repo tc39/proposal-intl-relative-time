@@ -58,7 +58,10 @@ Implementation Progress
 
 - [V8 v7.1.179](https://bugs.chromium.org/p/v8/issues/detail?id=7869), shipped in Chrome 71
 - Shipped in Firefox 65
-- [Polyfill](https://github.com/catamphetamine/relative-time-format)
+- Polyfills:
+    - https://www.npmjs.com/package/@formatjs/intl-relativetimeformat
+    - https://www.npmjs.com/package/intl-relative-time-format
+    - https://www.npmjs.com/package/relative-time-format
 - [Browser compatibility](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat#Browser_compatibility)
 
 Backpointers
