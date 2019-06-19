@@ -76,7 +76,7 @@ The functionality of all polyfills is the same in terms of being spec-compliant:
 
 Criterion | `relative-time-format` | `intl-relative-time-format` | `@formatjs/intl-relativetimeformat`
 --- | --- | --- | ---
-Requirements | No requirements | [Requirements](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat#requirements): [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules), [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is), Node 10+ | [Requirements](https://www.npmjs.com/package/intl-relative-time-format#dependencies--browser-support): `Intl.NumberFormat`, `Intl.PluralRules`, `Intl.getCanonicalLocales`, `Object.is`, `WeakMap` and others
+Requirements | No requirements | [Requirements](https://www.npmjs.com/package/intl-relative-time-format#dependencies--browser-support): `Intl.NumberFormat`, `Intl.PluralRules`, `Intl.getCanonicalLocales`, `Object.is`, `WeakMap` and others | [Requirements](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat#requirements): [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules), [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is), Node 10+
 | Core bundle size | 8.7 kB | 63.2 kB | 8.5 kB |
 
 #### Authors
