@@ -58,15 +58,26 @@ Implementation Progress
 
 - [V8 v7.1.179](https://bugs.chromium.org/p/v8/issues/detail?id=7869), shipped in Chrome 71
 - Shipped in Firefox 65
-- Polyfills:
-    - https://www.npmjs.com/package/@formatjs/intl-relativetimeformat
-    - https://www.npmjs.com/package/intl-relative-time-format
-    - https://www.npmjs.com/package/relative-time-format
+- [Polyfills](#polyfills) are available
 - [Browser compatibility](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat#Browser_compatibility)
 
 Backpointers
 
 - https://github.com/tc39/ecma402/issues/35
+
+#### Polyfills
+
+There're several polyfills available (most popular first):
+ - [`relative-time-format`](https://www.npmjs.com/package/relative-time-format)
+ - [`intl-relative-time-format`](https://www.npmjs.com/package/intl-relative-time-format)
+ - [`@formatjs/intl-relativetimeformat`](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat)
+
+The functionality of all polyfills is the same in terms of being spec-compliant: they only differ in their implementation details like the way the polyfill is imported or the way locales are loaded. Here's a comparison table:
+
+Criterion | `relative-time-format` | `intl-relative-time-format` | `@formatjs/intl-relativetimeformat`
+--- | --- | --- | ---
+Requirements | No requirements | [Requirements](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat#requirements): [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules), [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is), Node 10+ | [Requirements](https://www.npmjs.com/package/intl-relative-time-format#dependencies--browser-support): `Intl.NumberFormat`, `Intl.PluralRules`, `Intl.getCanonicalLocales`, `Object.is`, `WeakMap` and others
+| Core bundle size | 8.7 kB | 63.2 kB | 8.5 kB |
 
 #### Authors
 
