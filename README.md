@@ -72,8 +72,7 @@ There're several polyfills available which are listed in the comparison table be
 Polyfill | [`relative-time-format`](https://www.npmjs.com/package/relative-time-format) | [`intl-relative-time-format`](https://www.npmjs.com/package/intl-relative-time-format) | [`@formatjs/intl-relativetimeformat`](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat)
 --- | --- | --- | ---
 Requirements | No requirements | [Requirements](https://www.npmjs.com/package/intl-relative-time-format#dependencies--browser-support): [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat), [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules), [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_ObjectsGlobal_Objects/Intl/getCanonicalLocales), `Object.is`, `WeakMap` and others | [Requirements](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat#requirements): [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat), [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules), [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)
-| Core bundle size | 8.7 kB | 12.3 kB | 8.5 kB |
-| Passes the [Official ECMAScript Conformance Test](https://github.com/tc39/test262) |   |   | ✔️
+Core bundle size | 8.7 kB | 12.3 kB | 8.5 kB
 
 #### Authors
 
