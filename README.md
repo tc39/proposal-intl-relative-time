@@ -58,15 +58,22 @@ Implementation Progress
 
 - [V8 v7.1.179](https://bugs.chromium.org/p/v8/issues/detail?id=7869), shipped in Chrome 71
 - Shipped in Firefox 65
-- Polyfills:
-    - https://www.npmjs.com/package/@formatjs/intl-relativetimeformat
-    - https://www.npmjs.com/package/intl-relative-time-format
-    - https://www.npmjs.com/package/relative-time-format
+- [Polyfills](#polyfills) are available
 - [Browser compatibility](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat#Browser_compatibility)
 
 Backpointers
 
 - https://github.com/tc39/ecma402/issues/35
+
+#### Polyfills
+
+There're several polyfills available which are listed in the comparison table below. The functionality of all polyfills is the same in terms of the API: they only differ in their implementation details like the way the polyfill is imported or the way locales are loaded or whether the implementation passes the [Official ECMAScript Conformance Test](https://github.com/tc39/test262) for the complete coverage of all possible edge cases.
+
+Polyfill | [`intl-relative-time-format`](https://www.npmjs.com/package/intl-relative-time-format) | [`@formatjs/intl-relativetimeformat`](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) | [`relative-time-format`](https://www.npmjs.com/package/relative-time-format)
+--- | --- | --- | ---
+Requirements | [Requirements](https://www.npmjs.com/package/intl-relative-time-format#dependencies--browser-support): [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat), [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules), [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_ObjectsGlobal_Objects/Intl/getCanonicalLocales), `Object.is`, `WeakMap` and others | [Requirements](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat#requirements): [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat), [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules), [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) | No requirements
+Core bundle size (gzipped) | ![3.2 kB](https://img.shields.io/bundlephobia/minzip/intl-relative-time-format.svg?label=size) | ![2.7 kB](https://img.shields.io/bundlephobia/minzip/@formatjs/intl-relativetimeformat.svg?label=size)  | ![3.0 kB](https://img.shields.io/bundlephobia/minzip/relative-time-format.svg?label=size)
+| Passes the [Official ECMAScript Conformance Test](https://github.com/tc39/test262) | ✔️ [Yes](https://github.com/wessberg/intl-relative-time-format#description) | ✔️ [Yes](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat#tests) | [No](https://github.com/catamphetamine/relative-time-format#test262) 
 
 #### Authors
 
