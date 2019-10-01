@@ -46,6 +46,11 @@
       "type": "clause",
       "number": "9.1",
       "id": "sec-internal-slots"
-    }
+    },
+    {
+      "type": "op",
+      "aoid": "PartitionPattern",
+      "id": "sec-partitionpattern"
+    }	    
   ]
 }
