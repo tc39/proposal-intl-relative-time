@@ -127,13 +127,12 @@
         1. Let _patternParts_ be PartitionPattern(_pattern_).
         1. Let _result_ be a new empty List.
         1. For each element _patternPart_ of _patternParts_, in List order, do
-          1. Let _part_ be _patternPart_.[[Type]].
-          1. If _part_ is `"literal"`, then
+          1. If _patternPart_.[[Type]] is `"literal"`, then
             1. Append Record { [[Type]]: `"literal"`, [[Value]]: _patternPart_.[[Value]] } to _result_.
           1. Else,
-            1. Assert: _part_ is `"0"`
+            1. Assert: _patternPart_.[[Type]] is `"0"`.
             1. For each _part_ in _parts_, do
-              1. Add new part Record { [[Type]]: _part_.[[Type]], [[Value]]: _part_.[[Value]], [[Unit]]: _unit_ } as a new element on the List _result_.
+              1. Append Record { [[Type]]: _part_.[[Type]], [[Value]]: _part_.[[Value]], [[Unit]]: _unit_ } to _result_.
         1. Return _result_.
       </emu-alg>
     </emu-clause>
