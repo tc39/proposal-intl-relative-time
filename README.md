@@ -52,7 +52,7 @@ rtf.format(1, "day");
 
 ### Implementation Status
 
-__Stage 3__
+__Stage 4__
 
 Implementation Progress
 
