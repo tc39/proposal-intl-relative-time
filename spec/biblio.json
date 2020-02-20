@@ -1,0 +1,56 @@
+{
+  "https://tc39.github.io/ecma262/": [
+    {
+      "type": "op",
+      "aoid": "string-concatenation",
+      "id": "sec-ecmascript-language-types-string-type"
+    }
+  ],
+  "https://tc39.github.io/ecma402/": [
+    {
+      "type": "op",
+      "aoid": "GetOption",
+      "id": "sec-getoption"
+    },
+    {
+      "type": "op",
+      "aoid": "ResolveLocale",
+      "id": "sec-resolvelocale"
+    },
+    {
+      "type": "op",
+      "aoid": "CanonicalizeLocaleList",
+      "id": "sec-canonicalizelocalelist"
+    },
+    {
+      "type": "op",
+      "aoid": "SupportedLocales",
+      "id": "sec-supportedlocales"
+    },
+    {
+      "type": "op",
+      "aoid": "PartitionNumberPattern",
+      "id": "sec-partitionnumberpattern"
+    },
+    {
+      "type": "op",
+      "aoid": "ResolvePlural",
+      "id": "sec-resolveplural"
+    },
+    {
+      "type": "term",
+      "term": "%StringProto_indexOf%",
+      "id": "sec-402-well-known-intrinsic-objects"
+    },
+    {
+      "type": "clause",
+      "number": "9.1",
+      "id": "sec-internal-slots"
+    },
+    {
+      "type": "op",
+      "aoid": "PartitionPattern",
+      "id": "sec-partitionpattern"
+    }	    
+  ]
+}

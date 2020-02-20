@@ -8,33 +8,72 @@ Due to common use, relative time–formatted values exist in a majority of websi
 
 It is highly probable that the majority of current relative time formatting implementations require a large portion of CLDR raw or compiled data to format relative time values. Bringing this into the platform will improve performance of the web and developer productivity as they no longer have to bring extra weight to format relative time values.
 
-### Usage
+### Usage examples
+
+The following example shows how to create a relative time formatter using the English language.
+
+> Units : "year", "quarter", "month", "week", "day", "hour", "minute" and "second".
 
 ```js
-// Create a relative time formatter in your locale.
-let rtf = new Intl.RelativeTimeFormat("en", {
-    style: "long", // "long" (default), "short", or "narrow"
+// Create a relative time formatter in your locale
+// with default values explicitly passed in.
+const rtf = new Intl.RelativeTimeFormat("en", {
+    localeMatcher: "best fit", // other values: "lookup"
+    numeric: "always", // other values: "auto"
+    style: "long", // other values: "short" or "narrow"
 });
 
-// Format relative time using the day unit.
-rtf.format(
-  -1,
-  "day" // "year", "quarter", "month", "week", "day", "hour", "minute", or "second"
-);
+
+// Format relative time using negative value (-1).
+rtf.format(-1, "day");
+// > "1 day ago"
+
+// Format relative time using positive  value (1).
+rtf.format(1, "day");
+// > "in 1 day"
+
+```
+
+> Note: If `numeric:auto` option is passed, it will produce the string `yesterday` or `tomorrow` instead of `1 day ago` or `in 1 day`, this allows to not always have to use numeric values in the output.
+
+```js
+// Create a relative time formatter in your locale
+// with numeric: "auto" option value passed in.
+const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+// Format relative time using negative value (-1).
+rtf.format(-1, "day");
 // > "yesterday"
+
+// Format relative time using positive day unit (1).
+rtf.format(1, "day");
+// > "tomorrow"
 ```
 
 ### Implementation Status
 
-__Stage 2__
+__Stage 4__
 
 Implementation Progress
 
-- Polyfill (in progress)
+- [V8 v7.1.179](https://bugs.chromium.org/p/v8/issues/detail?id=7869), shipped in Chrome 71
+- Shipped in Firefox 65
+- [Polyfills](#polyfills) are available
+- [Browser compatibility](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat#Browser_compatibility)
 
 Backpointers
 
 - https://github.com/tc39/ecma402/issues/35
+
+#### Polyfills
+
+There're several polyfills available which are listed in the comparison table below. The functionality of all polyfills is the same in terms of the API: they only differ in their implementation details like the way the polyfill is imported or the way locales are loaded or whether the implementation passes the [Official ECMAScript Conformance Test](https://github.com/tc39/test262) for the complete coverage of all possible edge cases.
+
+Polyfill | [`intl-relative-time-format`](https://www.npmjs.com/package/intl-relative-time-format) | [`@formatjs/intl-relativetimeformat`](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) | [`relative-time-format`](https://www.npmjs.com/package/relative-time-format)
+--- | --- | --- | ---
+Requirements | [Requirements](https://www.npmjs.com/package/intl-relative-time-format#dependencies--browser-support): [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat), [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules), [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_ObjectsGlobal_Objects/Intl/getCanonicalLocales), `Object.is`, `WeakMap` and others | [Requirements](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat#requirements): [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat), [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules), [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) | No requirements
+Core bundle size (gzipped) | ![3.2 kB](https://img.shields.io/bundlephobia/minzip/intl-relative-time-format.svg?label=size) | ![2.7 kB](https://img.shields.io/bundlephobia/minzip/@formatjs/intl-relativetimeformat.svg?label=size)  | ![3.0 kB](https://img.shields.io/bundlephobia/minzip/relative-time-format.svg?label=size)
+| Passes the [Official ECMAScript Conformance Test](https://github.com/tc39/test262) | ✔️ [Yes](https://github.com/wessberg/intl-relative-time-format#description) | ✔️ [Yes](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat#tests) | [No](https://github.com/catamphetamine/relative-time-format#test262) 
 
 #### Authors
 
@@ -118,6 +157,12 @@ The fundamental difference between `RelativeTimeFormat` and `UnitFormat` is that
 
 A countdown for example is a mix of `UnitFormat` and `ListFormat`, and is not a `RelativeTimeFormat`.
 
+#### NumberFormat options (e.g., useGrouping, maximumFractionDigits)
+
+RelativeTimeFormat messages may include number parts (e.g., the `1,000` in `1,000 days ago`), which are formatted using the NumberFormat default options.
+
+In this design, we didn't find any use case that could justify allowing to change/override these NumberFormat default options. Therefore, RelativeTimeFormat doesn't include any NumberFormat option.
+
 ### API
 
 #### `Intl.RelativeTimeFormat([locales[, options]])`
@@ -132,7 +177,14 @@ Optional. A string with a BCP 47 language tag, or an array of such strings. For 
 
 Optional. An object with some or all of the following properties:
 
-##### `options.style`
+##### `localeMatcher`
+
+The locale matching algorithm to use. Possible values are `"lookup"` and `"best fit"`; the default is `"best fit"`. For information about this option, see the  [`Intl` page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_negotiation).
+
+##### `numeric`
+The format of output message. Possible values are  `"always"` (default, e.g., `1 day ago`), or `"auto"` (e.g., `yesterday`). `"auto"` allows to not always have to use numeric values in the output.
+
+##### `style`
 
 The length of the internationalized message. Possible values are: `"long"` (default, e.g., `in 1 month`); `"short"` (e.g., `in 1 mo.`), or `"narrow"` (e.g., `in 1 mo.`). The narrow style could be similar to the short style for some locales.
 
@@ -140,7 +192,11 @@ The length of the internationalized message. Possible values are: `"long"` (defa
 
 ```js
 // Create a relative time formatter in your locale.
-let rtf = new Intl.RelativeTimeFormat("en", {style: "short"});
+let rtf = new Intl.RelativeTimeFormat("en", {
+    localeMatcher: "best fit", // other values: "lookup"
+    numeric: "always", // other values: "auto"
+    style: "long", // other values: "short" or "narrow"
+});
 ```
 
 ### `Intl.RelativeTimeFormat.prototype.format(value, unit)`
@@ -160,7 +216,7 @@ Unit to use in the relative time internationalized message. Possible values are:
 #### Example
 
 ```js
-let rtf = new Intl.RelativeTimeFormat("en");
+const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
 // Format relative time using the day unit.
 rtf.format(-1, "day");
@@ -270,25 +326,25 @@ in 1 sec.
 in 1 sec.
 1 sec. ago
 2 sec. ago
+now
 ```
 
 ### `Intl.RelativeTimeFormat.prototype.formatToParts(value, unit)`
 
-The `Intl.RelativeTimeFormat.prototype.formatToParts` method is a version of the `format` method which it returns an array of objects which represent "parts" of the object. These objects have two properties: `type` is the unit name or the string `"literal"`, and `value`, which is the String which is the component of the output.
+The `Intl.RelativeTimeFormat.prototype.formatToParts` method is a version of the `format` method which it returns an array of objects which represent "parts" of the object, separating the formatted number into its consituent parts and separating it from other surrounding text. These objects have two properties: `type` a NumberFormat formatToParts type, and `value`, which is the String which is the component of the output. If a "part" came from NumberFormat, it will have a `unit` property which indicates the unit being formatted; literals which are part of the larger frame will not have this property.
 
 #### Example
 
 ```js
-let rtf = new Intl.RelativeTimeFormat("en");
+const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
 // Format relative time using the day unit.
 rtf.formatToParts(-1, "day");
 // > [{ type: "literal", value: "yesterday"}]
 
 rtf.formatToParts(100, "day");
-// > [{ type: "literal", value: "in "}, { type: "day", value: "100"}, { type: "literal", value: " days"}]
+// > [{ type: "literal", value: "in " }, { type: "integer", value: "100", unit: "day" }, { type: "literal", value: " days" }]
 ```
-
 
 ## Development
 
